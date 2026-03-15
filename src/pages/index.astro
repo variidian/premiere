@@ -1,17 +1,24 @@
 ---
-
+import '../../src/styles/global.css'
 ---
-
-<html lang="en">
-	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
+		<title>Premiere</title>
+		<body class="bg-purpl">
+		<img src="banner_premiere.png" class=" w-screen ">
+		<div class="bg-[url(blue.png)] w-screen bg-cover bg-bottom z-20 relative">
+		<p class="pt-20 pb-5 italic">June 22nd - July 17th, for teens 18 and under</p>
+		<p>We all know the games you make disappear into a void, never to be touched again. That ends today.</p>
+		<p class="!text-2xl pb-80">Ship us a trailer to your game and we'll ship you x.</p>
+	</div>
+	<div class="relative">
+	<div class="bg-[url(yellow.png)] w-screen bg-cover bg-bottom z-10 -top-100 absolute">
+		<h1 class="pt-100">How does premiere work?</h1>
+		<p></p>
+		<p class="pb-70"></p>
+	</div>
+</div>
 	</body>
-</html>

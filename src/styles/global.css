@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
+@theme {
+    --purpl: #6c629b
+}
+* {
+    font-family: Fraunces;
+    text-align: center;
+    color: #Fff;
+    font-size: larger;
+}
+h1 {
+    font-size: 50px;
+    font-weight: 900;
+}
