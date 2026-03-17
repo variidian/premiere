@@ -23,11 +23,11 @@ import '../../src/styles/global.css'
 		<p class="pb-15">keep track of your hours with <a href="https://hackatime.hackclub.com/">hackatime </a>and <a href="https://lapse.hackclub.com/">lapse.</a> Have questions? send them in #slack-channel.</p>
 		<div class="flex flex-wrap items-center">
 		<img class="w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200" src="/card1.png" alt="build a game of your own, be creative!">
-		<img class="w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card2.png" alt="make a trailer to your game! screen record, animate, etc!">
+		<img class=" card w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card2.png" alt="make a trailer to your game! screen record, animate, etc!">
 		<img class="w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200"src="/card3.png" alt="Publish to Itch.io, Github, and make social media posts!">
-		<img class="w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card4.png" alt="GET FREE STUFF!!!">
+		<img class=" card w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card4.png" alt="GET FREE STUFF!!!">
 		</div>
-		<p class="pb-80"></p>
+		<p class="pb-100"></p>
 	</div>
 </div>
 <div class="pt-240 bg-[#6d639c]">
@@ -64,4 +64,18 @@ gsap.from(split.words, {
   stagger: 0.05
 });
 })
+const cards = document.querySelectorAll('.card');
+cards.forEach((card) => {
+  gsap.fromTo(card,
+    { y: 0 },
+    {y: 75,
+      scrollTrigger: {
+        trigger: card,
+        start: "top center",
+        end: "+=200",
+        scrub: 1
+      }
+    }
+  );
+});
 	  </script>
