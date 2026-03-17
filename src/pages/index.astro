@@ -18,9 +18,9 @@ import '../../src/styles/global.css'
 
 	</div>
 	<div class="relative">
-	<div class="bg-[url(/yellow.png)] w-screen bg-cover bg-bottom z-10 -top-130 absolute">
+	<div class="bg-[url(/yellow.png)] w-screen bg-cover bg-bottom z-10 -top-130 absolute split">
 		<h1 class="pt-130">How does premiere work?</h1>
-		<p class="pb-10">keep track of your hours with <a href="https://hackatime.hackclub.com/">hackatime </a>and <a href="https://lapse.hackclub.com/">lapse.</a> Have questions? send them in #slack-channel.</p>
+		<p class="pb-15">keep track of your hours with <a href="https://hackatime.hackclub.com/">hackatime </a>and <a href="https://lapse.hackclub.com/">lapse.</a> Have questions? send them in #slack-channel.</p>
 		<div class="flex flex-wrap items-center">
 		<img class="w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200" src="/card1.png" alt="build a game of your own, be creative!">
 		<img class="w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card2.png" alt="make a trailer to your game! screen record, animate, etc!">
@@ -31,7 +31,7 @@ import '../../src/styles/global.css'
 	</div>
 </div>
 <div class="pt-240 bg-[#6d639c]">
-	<div class="relative z-50">
+	<div class="relative z-50 split">
 	<h1>Prizes</h1>
 	<p>prizes are determined by the quality of your game + trailer & the amount of hours you spent making them.</p>
 	<p>image flexbox here... art max..</p>
@@ -45,14 +45,23 @@ import '../../src/styles/global.css'
 	<script>
 		import { gsap } from "gsap";
 		import { SplitText } from "gsap/SplitText";
-		gsap.registerPlugin(SplitText);
-let split = SplitText.create(".split", { type: "words" });
-
+		import { ScrollTrigger } from "gsap/ScrollTrigger";
+		gsap.registerPlugin(SplitText, ScrollTrigger);
+		const quotes = document.querySelectorAll(".split");
+quotes.forEach((quote)=>{
+	let split = SplitText.create(quote, { type: "words" });
 
 gsap.from(split.words, {
+	scrollTrigger: {
+      trigger: quote,
+      start: "top 80%", // Trigger when top of element hits 80% of viewport
+      end: "bottom 60%",
+      scrub: true, // Links animation to scrollbar
+    },
   duration: 1, 
   y: 100,       
   autoAlpha: 0, // fade in from opacity: 0 and visibility: hidden
   stagger: 0.05
 });
+})
 	  </script>
