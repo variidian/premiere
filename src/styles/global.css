@@ -31,6 +31,25 @@ h1:hover {
 b:hover {
     font-style: italic ;
 }
-::-webkit-scrollbar { display: none; } /* get rid of scroll bar*/
+@keyframes fadeOutSlideUp {
+    70% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100px); 
+    }
+  }
+  
+
+  .hero-image {
+    animation: fadeOutSlideUp linear forwards;
+    animation-timeline: view();
+    animation-range: 0% 30%;
+    position: sticky;
+    top: 0;
+  }
+::-webkit-scrollbar { display: none; }
 scrollbar-width: none; 
 
