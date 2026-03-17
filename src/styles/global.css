@@ -46,7 +46,7 @@ b:hover {
   .hero-image {
     animation: fadeOutSlideUp linear forwards;
     animation-timeline: view();
-    animation-range: 0% 30%;
+    animation-range: 0% 40%;
     position: sticky;
     top: 0;
   }
