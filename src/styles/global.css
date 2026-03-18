@@ -31,11 +31,8 @@ b:hover {
 }
 
 @keyframes fadeOut {
-    50% {
+    0% {
       opacity: 1;
-    }
-    75% {
-      opacity: 0;
     }
     100% {
       opacity: 0;
@@ -45,7 +42,7 @@ b:hover {
   .hero-image {
     animation: fadeOut linear forwards;
     animation-timeline: view();
-    animation-range: 0% 40%;
+    animation-range: 30% 50%;
     position: sticky;
     top: 0;
   }
