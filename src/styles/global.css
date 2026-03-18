@@ -30,24 +30,20 @@ b:hover {
     font-style: italic ;
 }
 
-@keyframes fadeOutSlideUp {
+@keyframes fadeOut {
     50% {
       opacity: 1;
-      transform: translateY(0);
     }
     75% {
       opacity: 0;
-      transform: translateY(-100px); 
     }
     100% {
       opacity: 0;
-      transform: translateY(-100px); 
     }
   }
   
-
   .hero-image {
-    animation: fadeOutSlideUp linear forwards;
+    animation: fadeOut linear forwards;
     animation-timeline: view();
     animation-range: 0% 40%;
     position: sticky;
