@@ -31,9 +31,13 @@ b:hover {
 }
 
 @keyframes fadeOutSlideUp {
-    70% {
+    50% {
       opacity: 1;
       transform: translateY(0);
+    }
+    75% {
+      opacity: 0;
+      transform: translateY(-100px); 
     }
     100% {
       opacity: 0;
