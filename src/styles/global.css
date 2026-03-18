@@ -17,7 +17,6 @@ h1 {
 }
 * {
     text-align: center;
-    color: #Fff;
 }
 a:hover {
     text-decoration: underline;
@@ -25,12 +24,12 @@ a:hover {
     font-weight: 750;
 }
 h1:hover {
-    text-decoration: underline;
     transform: scale(1.05);
 }
 b:hover {
     font-style: italic ;
 }
+
 @keyframes fadeOutSlideUp {
     70% {
       opacity: 1;
