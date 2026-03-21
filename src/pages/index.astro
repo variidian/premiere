@@ -10,7 +10,7 @@ import '../../src/styles/global.css'
 		<body class="bg-[#25455d] m-0 p-0">
 		<img src="/banner_premiere4.png" class=" w-screen hero-image">
 		<img src="/premiere.png" class="fixed scale-50 transition 100 hover:scale-70 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-		<div class=" w-screen h-[1100px] overflow-hidden z-20 relative split">
+		<div class=" w-screen h-[1100px] z-20 relative split">
 		<img src="/blue.png" class="absolute top-0 left-0 w-full h-full object-cover bgup">
 		<p class="pt-120 pb-10 italic">June 22nd - July 17th, for teens 18 and under</p>
 		<p>We all know games you make disappear into the void, played by few then abandoned.  <b>That ends today.</b></p>
@@ -20,6 +20,7 @@ import '../../src/styles/global.css'
 	</div>
 	<div class="relative">
 	<div class="bg-[url(/yellow.png)] w-screen bg-bottom z-10 -top-130 absolute text-[#234459]">
+
 		<h1 class="pt-160">How does premiere work?</h1>
 		<p class="pb-15 move-down">keep track of your hours with <a href="https://hackatime.hackclub.com/">hackatime </a>and <a href="https://lapse.hackclub.com/">lapse.</a> Have questions? send them in #slack-channel.</p>
 		<div class="flex flex-wrap items-center">
@@ -134,13 +135,11 @@ bgup.forEach((backgroundmovement)=>{
 	gsap.fromTo(backgroundmovement,
 		{y: 0},
 		{y: -75, 
-			scrollTrigger: {
-		trigger: backgroundmovement.parentElement,
-        start: "top center",
-        end: "bottom top",
-        scrub: 1
+			repeat: -1,
+			yoyo: true,
+			ease: "none",
+			duration: 5
       }
-		}
 	)
 })
 	  </script>
