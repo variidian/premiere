@@ -10,7 +10,8 @@ import '../../src/styles/global.css'
 		<body class="bg-[#25455d] m-0 p-0">
 		<img src="/banner_premiere4.png" class=" w-screen hero-image">
 		<img src="/premiere.png" class="fixed scale-50 transition 100 hover:scale-70 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-		<div class="bg-[url(/blue.png)] w-screen bg-cover bg-bottom z-20 relative split">
+		<div class=" w-screen h-[1100px] overflow-hidden z-20 relative split">
+		<img src="/blue.png" class="absolute top-0 left-0 w-full h-full object-cover bgup">
 		<p class="pt-120 pb-10 italic">June 22nd - July 17th, for teens 18 and under</p>
 		<p>We all know games you make disappear into the void, played by few then abandoned.  <b>That ends today.</b></p>
 		<p class="!text-3xl" >Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b>a camera</b></p> 
@@ -35,10 +36,10 @@ import '../../src/styles/global.css'
 	<h1 >Prizes</h1>
 	<p class="pb-15 move-down">Prizes are determined by the quality of your game + trailer & how many hours you spent on them. The below are not the only prizes available!</p>
 	<div class="flex overflow-hidden">
-	<img class="float ml-10 rotate-10 w-1/4 h-1/4 scale-135" src="/steam.png">
-	<img class="float2 -rotate-5 w-1/4 h-1/4" src="/godot.png">
-	<img class="float w-1/4 h-1/4 rotate-10" src="/cam.png">
-	<img class="float2 w-1/4 h-1/4 -rotate-5" src="/hegale.png">
+	<img class="float ml-10 rotate-10 w-1/4 h-1/4 scale-135 hover:saturate-200" src="/steam.png">
+	<img class="float2 -rotate-5 w-1/4 h-1/4  hover:saturate-200" src="/godot.png">
+	<img class="float w-1/4 h-1/4 rotate-10  hover:saturate-200" src="/cam.png">
+	<img class="float2 w-1/4 h-1/4 -rotate-5  hover:saturate-200" src="/hegale.png">
 	</div>
 	<p class="pb-150"></p>
 	</div>
@@ -125,6 +126,20 @@ float2.forEach((floaty)=> {
 			yoyo: true,
 			ease: "none",
 			duration: 2
+		}
+	)
+})
+const bgup = document.querySelectorAll('.bgup');
+bgup.forEach((backgroundmovement)=>{
+	gsap.fromTo(backgroundmovement,
+		{y: 0},
+		{y: -75, 
+			scrollTrigger: {
+		trigger: backgroundmovement.parentElement,
+        start: "top center",
+        end: "bottom top",
+        scrub: 1
+      }
 		}
 	)
 })
