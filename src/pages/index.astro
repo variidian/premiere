@@ -9,11 +9,11 @@ import '../../src/styles/global.css'
 		<title>Premiere</title>
 		<body class="bg-[#25455d] m-0 p-0">
 		<img src="/banner_premiere4.png" class=" w-screen hero-image">
-		<img src="/premiere.png" class="fixed scale-50 transition 100 hover:scale-75 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+		<img src="/premiere.png" class="fixed scale-50 transition 100 hover:scale-70 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 		<div class="bg-[url(/blue.png)] w-screen bg-cover bg-bottom z-20 relative split">
 		<p class="pt-120 pb-10 italic">June 22nd - July 17th, for teens 18 and under</p>
 		<p>We all know games you make disappear into the void, played by few then abandoned.  <b>That ends today.</b></p>
-		<p class="!text-3xl" >Ship <b>a trailer</b> to <b>your game</b> and we'll ship you x.</p>
+		<p class="!text-3xl" >Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b>a camera</b></p> 
 		<p class="pb-120">this way, your game will reach more people & you'll get prizes for doing it.</p>
 
 	</div>
@@ -32,10 +32,15 @@ import '../../src/styles/global.css'
 </div>
 <div class="relative">
 <div class="pt-350 bg-[url(/purpl.png)] w-screen bg-bottom absolute text-[#234459] z-5">
-	<h1>Prizes</h1>
-	<p>prizes are determined by the quality of your game + trailer & the amount of hours you spent making them.</p>
-	<p>image flexbox here... art max..</p>
-	<p class="pb-240"></p>
+	<h1 >Prizes</h1>
+	<p class="pb-15 move-down">Prizes are determined by the quality of your game + trailer & how many hours you spent on them. The below are not the only prizes available!</p>
+	<div class="flex overflow-hidden">
+	<img class="float ml-10 rotate-10 w-1/4 h-1/4 scale-135" src="/steam.png">
+	<img class="float2 -rotate-5 w-1/4 h-1/4" src="/godot.png">
+	<img class="float w-1/4 h-1/4 rotate-10" src="/cam.png">
+	<img class="float2 w-1/4 h-1/4 -rotate-5" src="/hegale.png">
+	</div>
+	<p class="pb-150"></p>
 	</div>
 </div>
 <div class="relative">
@@ -55,7 +60,7 @@ quotes.forEach((quote)=>{
 	let split = SplitText.create(quote, { type: "words" });
 
 	split.words.forEach((word) => {
-	word.style.color = "#234459";
+	word.style.color = "#234459"; 
   });
 
 gsap.from(split.words, {
@@ -98,5 +103,29 @@ move.forEach((move)=> {
       }
 	}
 )
+})
+const float = document.querySelectorAll('.float');
+float.forEach((floaty)=> {
+	gsap.fromTo(floaty,
+		{y: 0},
+		{y: 50,
+			repeat: -1,
+			yoyo: true,
+			duration: 2,
+			ease: "none"
+		}
+	)
+})
+const float2 = document.querySelectorAll('.float2');
+float2.forEach((floaty)=> {
+	gsap.fromTo(floaty,
+		{y: 50},
+		{y: 0,
+			repeat: -1,
+			yoyo: true,
+			ease: "none",
+			duration: 2
+		}
+	)
 })
 	  </script>
