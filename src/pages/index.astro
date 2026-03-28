@@ -42,11 +42,18 @@ const AccordionItems = [
 		<img src="/banner_premiere4.png" class=" w-screen hero-image">
 		<img src="/premiere.png" class="fixed scale-50 transition 100 hover:scale-70 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 		<div class=" w-screen h-[1100px]  z-20 relative split">
-		<img src="/blue.png" class="absolute top-0 left-0 w-full h-full object-cover bgup">
+		<img src="/blue.png" class="absolute top-0 left-0 w-full h-full object-cover bgup ">
 		<p class="pt-110 pb-10 italic">June 22nd - July 17th, for teens 18 and under</p>
 		<p>We all know games you make disappear into the void, played by few then abandoned.  <b>That ends today.</b></p>
 		<p class="!text-3xl" >Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b>a camera</b></p> 
-		<p class="pb-120">this way, your game will reach more people & you'll get prizes for doing it.</p>
+		<p>this way, your game will reach more people & you'll get prizes for doing it.</p>
+		<div class="relative">
+			<form action="https://forms.fillout.com/t/uAJgYAP9Ntus">
+			<input class="rounded-full block absolute m-auto left-0 right-0 bg-[#f6f3e0] p-5 w-[35vw] form border-4 border-[#0c2639] focus:border-6 mt-20 z-6" type="text" name="email" placeholder="enter your email!">
+			<div class="bg-[#25455d] rounded-full block absolute m-auto left-4 right-0 p-10 w-[35vw] mt-20 top-3 z-5 extend"></div>
+			</form>
+		</div>
+		<p class="pb-120"></p>
 
 	</div>
 	<div class="relative">
@@ -178,5 +185,13 @@ bgup.forEach((backgroundmovement)=>{
 			duration: 5
       }
 	)
+})
+const rsvp_form = document.querySelector(".form");
+const extend = document.querySelector(".extend");
+rsvp_form.addEventListener("focus", () => {
+extend.style.top = "20px";
+})
+rsvp_form.addEventListener("blur", () => {
+extend.style.top = "12px";
 })
 	  </script>
