@@ -197,17 +197,25 @@ extend.style.top = "12px";
 })
 const prizeText = document.querySelector(".prize");
 const possiblePrizes = ["a camera","adobe premiere","videogames","a godot plushie","a steam publishing license"]
+
+let lastAcceptedPrize
 function changePrizeText() {
-	let prize = possiblePrizes[Math.floor(Math.random() * possiblePrizes.length)];
+	let prize
+	do {
+    prize = possiblePrizes[Math.floor(Math.random() * possiblePrizes.length)];
+} while (prize == lastAcceptedPrize);
+	
 	prizeText.innerHTML= `${prize}`;
+	lastAcceptedPrize = prize
 	gsap.from(".pop", {
   duration: 0.4,
   scale: 0.7,
-  opacity: 0,
   stagger: 0.1,
   ease: "back.out(3)"
 });
+return prize;
 }
+
 changePrizeText();
 setInterval(changePrizeText, 2000);
 	  </script>
