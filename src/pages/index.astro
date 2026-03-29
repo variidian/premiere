@@ -42,11 +42,11 @@ const AccordionItems = [
 		<img src="/banner_premiere4.png" class=" w-screen hero-image">
 		<img src="/premiere.png" class="fixed scale-50 transition 100 hover:scale-70 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 		<div class=" w-screen h-[1100px]  z-20 relative split">
-		<img src="/blue.png" class="absolute w-screen h-full bgup bg-no-repeat ">
+		<img src="/blue.png" class="absolute w-screen h-full bgup bg-no-repeat s">
 		<p class="pt-110 pb-10 italic">June 22nd - July 17th, for teens 18 and under</p>
-		<p>We all know games you make disappear into the void, played by few then abandoned.  <b>That ends today.</b></p>
-		<p class="!text-3xl" >Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b>a camera</b></p> 
-		<p>this way, your game will reach more people & you'll get prizes for doing it.</p>
+		<p class="">We all know games you make disappear into the void, played by few then abandoned.<b>That ends today.</b></p>
+		<p class="!text-3xl nono relative z-21">Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b class="prize"></b></p> 
+		<p class="">this way, your game will reach more people & you'll get prizes for doing it.</p>
 		<div class="relative">
 			<form action="https://forms.fillout.com/t/uAJgYAP9Ntus">
 			<input class="rounded-full block absolute m-auto left-0 right-0 bg-[#f6f3e0] p-5 w-[35vw] form border-4 border-[#0c2639] focus:border-6 mt-20 z-6" type="text" name="email" placeholder="enter your email!">
@@ -58,10 +58,10 @@ const AccordionItems = [
 
 	</div>
 	<div class="relative w-screen">
-	<div class=" bg-[url(/yellow.png)] w-screen bg-cover h-[1894px] z-10 -top-130 absolute bg-no-repeat bg-bottom text-[#234459]">
+	<div class=" bg-[url(/yellow.png)] w-screen bg-cover h-[1894px] z-10 -top-130 absolute bg-no-repeat bg-bottom text-[#000]">
 		<h1 class="pt-160 z-30">How does premiere work?</h1>
 		<p class="pb-15 move-down">keep track of your hours with <a href="https://hackatime.hackclub.com/">hackatime </a>and <a href="https://lapse.hackclub.com/">lapse.</a> Have questions? send them in #slack-channel.</p>
-		<div class="flex flex-wrap items-center">
+		<div class="flex flex-wrap items-center pr-30 pl-30">
 		<img class=" w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200" src="/card1.png" alt="build a game of your own, be creative!">
 		<img class=" card w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card2.png" alt="make a trailer to your game! screen record, animate, etc!">
 		<img class="  w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200"src="/card3.png" alt="Publish to Itch.io, Github, and make social media posts!">
@@ -70,10 +70,10 @@ const AccordionItems = [
 	</div>
 </div>
 <div class="relative">
-<div class="pt-375 bg-[url(/purpl.png)] w-screen bg-cover bg-bottom absolute bg-no-repeat text-[#234459] z-5 ">
+<div class="pt-375 bg-[url(/purpl.png)] w-screen bg-cover bg-bottom absolute bg-no-repeat text-[#000] z-5 ">
 	<h1>Prizes</h1>
-	<p class="z-50 pb-30 move-down">Prizes are mostly determined by the quality of your game + trailer, but how long you spent on each project also counts. Each project must have a minimum of 6h logged & started after June 22nd. The below are not the only prizes available, and you can get multiple if you spent long enough + have a high quality game!</p>
-	<div class="flex overflow-hidden pb-10 pt-10">
+	<p class="z-50 pb-30 move-down pr-30 pl-30">Prizes are mostly determined by the quality of your game + trailer, but how long you spent on each project also counts. Each project must have a minimum of 6h logged & started after June 22nd. The below are not the only prizes available, and you can get multiple if you spent long enough + have a high quality game!</p>
+	<div class="flex overflow-hidden pb-10 pt-10 pr-30 pl-30">
 		<img class="float rotate-10 w-1/5 h-1/5 scale-135 hover:saturate-200" src="/steam.png">
 		<img class="float2 -rotate-5 w-1/5 h-1/5  hover:saturate-200" src="/godot.png">
 		<img class="float w-1/5 h-1/5 rotate-10  hover:saturate-200" src="/cam.png">
@@ -104,10 +104,10 @@ const AccordionItems = [
 		gsap.registerPlugin(SplitText, ScrollTrigger);
 		const quotes = document.querySelectorAll(".split");
 quotes.forEach((quote)=>{
-	let split = SplitText.create(quote, { type: "words" });
+	let split = SplitText.create(quote, { type: "words", ignore:".nono"});
 
 	split.words.forEach((word) => {
-	word.style.color = "#234459"; 
+	word.style.color = "#000"; 
   });
 
 gsap.from(split.words, {
@@ -195,4 +195,12 @@ extend.style.top = "20px";
 rsvp_form.addEventListener("blur", () => {
 extend.style.top = "12px";
 })
+const prizeText = document.querySelector(".prize");
+const possiblePrizes = ["a camera","adobe premiere","videogames","a godot plushie","a steam publishing license"]
+function changePrizeText() {
+	let prize = possiblePrizes[Math.floor(Math.random() * possiblePrizes.length)];
+	prizeText.innerHTML= `${prize}`;
+}
+changePrizeText();
+setInterval(changePrizeText, 2000);
 	  </script>

@@ -18,12 +18,12 @@ h1 {
 input::placeholder {
   font-size: x-large;
   font-family: 'Fraunces';
-  color: #25455d;
+  color: #000;
 }
 form {
   font-size: x-large;
   font-family: 'Fraunces';
-  color: #25455d;
+  color: #000;
  
 }
 input:focus {
