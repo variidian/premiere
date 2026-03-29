@@ -45,7 +45,7 @@ const AccordionItems = [
 		<img src="/blue.png" class="absolute w-screen h-full bgup bg-no-repeat s">
 		<p class="pt-110 pb-10 italic">June 22nd - July 17th, for teens 18 and under</p>
 		<p class="">We all know games you make disappear into the void, played by few then abandoned.<b>That ends today.</b></p>
-		<p class="!text-3xl nono relative z-21">Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b class="prize"></b></p> 
+		<p class="!text-3xl nono pop z-21">Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b class="prize"></b></p> 
 		<p class="">this way, your game will reach more people & you'll get prizes for doing it.</p>
 		<div class="relative">
 			<form action="https://forms.fillout.com/t/uAJgYAP9Ntus">
@@ -200,6 +200,13 @@ const possiblePrizes = ["a camera","adobe premiere","videogames","a godot plushi
 function changePrizeText() {
 	let prize = possiblePrizes[Math.floor(Math.random() * possiblePrizes.length)];
 	prizeText.innerHTML= `${prize}`;
+	gsap.from(".pop", {
+  duration: 0.4,
+  scale: 0.7,
+  opacity: 0,
+  stagger: 0.1,
+  ease: "back.out(3)"
+});
 }
 changePrizeText();
 setInterval(changePrizeText, 2000);
