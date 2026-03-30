@@ -7,6 +7,14 @@ p {
     margin-right: 10px;
     margin-bottom: 6px;
 }
+li {
+  font-family: 'Fraunces';
+    font-size: large;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 6px;
+}
+
 h1 {
     font-size: 60px;
     font-family: 'Bowlby One SC', sans-serif;

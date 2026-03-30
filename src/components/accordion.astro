@@ -7,8 +7,7 @@ const {question, answer } = Astro.props
 import '../../src/styles/global.css'
 ---
 <button class="accordion"><p>{question}</p></button>
-<div class="panel">
-  <p>{answer}</p>
+<div class="panel" set:html={answer}>
 </div>
 <style>
 .accordion {
