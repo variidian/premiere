@@ -51,7 +51,9 @@ h1:hover {
 b:hover {
     font-style: italic ;
 }
-
+button {
+  font-family: 'Fraunces';
+}
 @keyframes fadeOut {
     0% {
       opacity: 1;

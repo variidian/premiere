@@ -31,17 +31,6 @@ const AccordionItems = [
 		answer: "<p>40% of your total hours can be used towards making art for your game & making your trailer. Ex. if you've spent 2h on making sprites and 2h on making your trailer, you'll need to spend 6h on just coding your game. </p>"
 	},
 	{
-		question: "What are the hour requirements?",
-		answer: `<ul>
-		<li>godot plushie - 6h</li>
-		<li>exclusive premiere shirt - 6h</li>
-		<li>premiere pro 2 month subscription - 10h</li>
-		<li>$50 camera grant - 10h</li>
-		<li>$50 videogames grant - 10h</li>
-		<li>steam dev publishing license - 20h</li>
-	</ul>`
-	},
-	{
 		question: "I have another question!",
 		answer: "<p>Ask in #premiere! </p>"
 	}
@@ -63,19 +52,15 @@ const AccordionItems = [
 		<p class="!text-3xl nono pop z-21">Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b class="prize"></b></p> 
 		<p class="">this way, your game will reach more people & you'll get prizes for doing it.</p>
 		<div class="relative">
-			<form action="https://forms.fillout.com/t/uAJgYAP9Ntus">
-			<input class="rounded-full block absolute m-auto left-0 right-0 bg-[#f6f3e0] p-5 w-[35vw] form border-4 border-[#0c2639] focus:border-6 mt-20 z-6" type="text" name="email" placeholder="enter your email!">
-			<input class="rounded-full top-30 block absolute m-auto left-0 right-0 bg-[#f6f3e0] p-5 w-[10vw] form border-4 border-[#0c2639] hover:border-6 mt-20 z-6" type="submit">
-			<div class="bg-[#25455d] rounded-full block absolute m-auto left-4 right-0 p-10 w-[35vw] mt-20 top-3 z-5 extend"></div>
-			</form>
+			<button class="rounded-full top-30 block absolute m-auto left-0 right-0 bg-[#f6f3e0] p-5 w-[30vw] form border-4 border-[#0c2639] hover:border-6 mt-20 z-6 text-2xl" onclick="window.location.href='https://localhost:3000/oauth'">login with hackclub</button>
+			<div class="bg-[#25455d] rounded-full block absolute m-auto left-4 right-0 p-10 w-[30vw] mt-50 top-3 z-5 extend"></div>
 		</div>
 		<p class="pb-120"></p>
-
 	</div>
 	<div class="relative w-screen">
 	<div class=" bg-[url(/yellow.png)] w-screen bg-cover h-[1894px] z-10 -top-130 absolute bg-no-repeat bg-bottom text-[#000] pr-30 pl-30">
 		<h1 class="pt-160 z-30">How does premiere work?</h1>
-		<p class="pb-15 move-down ">Post your idea in <a href="https://hackclub.enterprise.slack.com/archives/C0APJFR4M4L">#premiere</a> & devlog in the same thread! Remember to keep track of your hours with <a href="https://hackatime.hackclub.com/">hackatime </a>and <a href="https://lapse.hackclub.com/">lapse.</a> Read <a href="https://hackclub.enterprise.slack.com/docs/T0266FRGM/F0AQCUDJPS4"> the #README canvas</a> for more information!</p>
+		<p class="pb-15 move-down ">Remember to keep track of your hours with <a href="https://hackatime.hackclub.com/">hackatime </a>and <a href="https://lapse.hackclub.com/">lapse.</a> Read <a href="https://hackclub.enterprise.slack.com/docs/T0266FRGM/F0AQCUDJPS4"> the #README canvas</a> for more information!</p>
 		<div class="flex flex-wrap items-center">
 		<img class=" w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200" src="/card1.png" alt="build a game of your own, be creative!">
 		<img class=" card w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card2.png" alt="make a trailer to your game! screen record, animate, etc!">
@@ -87,7 +72,7 @@ const AccordionItems = [
 <div class="relative">
 <div class="pt-375 bg-[url(/purpl.png)] w-screen bg-cover bg-bottom absolute bg-no-repeat text-[#000] z-5 ">
 	<h1>Prizes</h1>
-	<p class="z-50 pb-30 move-down pr-30 pl-30">Prizes are determined by both your project's quality and how long you spent on them. Each project must have a minimum of 6h logged & started after June 22nd.</p>
+	<p class="z-50 pb-30 move-down pr-30 pl-30">Prizes are determined by both your project's quality and how long you spent on them.</p>
 	<div class="flex overflow-hidden pb-10 pt-10 pr-30 pl-30">
 		<img class="float rotate-10 w-1/5 h-1/5 scale-135 hover:saturate-200" src="/steam.png">
 		<img class="float2 -rotate-5 w-1/5 h-1/5  hover:saturate-200" src="/godot.png">
