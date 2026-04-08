@@ -47,4 +47,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  #use for  hack club auth / hackatime
+  gem 'omniauth'
+  gem 'omniauth-oauth2'
+
+  
+  gem 'dotenv-rails', groups: [:development, :test]
 end
