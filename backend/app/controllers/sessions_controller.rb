@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     auth = request.env['omniauth.auth']
 
     if auth.nil?
-      redirect_to "http://localhost:4321?error=auth_failed"
+      redirect_to "/?error=auth_failed"
       return
     end
 
@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
       u.slack_id = info['identity']['slack_id']
     end
 
-    redirect_to "http://localhost:4321/dash?token=#{user.token}"
+    redirect_to "/dash?token=#{user.token}"
   end
 
   def me
