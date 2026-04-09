@@ -49,8 +49,9 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   #use for  hack club auth / hackatime
-  gem 'omniauth'
+  gem 'omniauth', '~> 2.0'
   gem 'omniauth-oauth2'
+  gem "rack-cors" #allows localhost:4321 / localhost:3000 to make requests to each other
   
-  gem 'dotenv-rails', groups: [:development, :test]
+  gem 'dotenv-rails', groups: [:development, :test] #environment variables
 end

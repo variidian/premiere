@@ -1,0 +1,19 @@
+---
+---
+
+<h1 id="welcome">loading...</h1>
+<p id="email"></p>
+<p id="slack"></p>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const uid = params.get('uid') || localStorage.getItem('uid');
+  if (params.get('uid')) localStorage.setItem('uid', params.get('uid'));
+
+  const res = await fetch(`/api/auth/me?uid=${uid}`);
+  const user = await res.json();
+
+  document.getElementById('welcome').textContent = `Welcome, ${user.name}!`;
+  document.getElementById('email').textContent = `your email is ${user.email}`;
+  document.getElementById('slack').textContent = `your slack id is ${user.slack_id}`;
+</script>
