@@ -51,7 +51,6 @@ group :development, :test do
   #use for  hack club auth / hackatime
   gem 'omniauth'
   gem 'omniauth-oauth2'
-
   
   gem 'dotenv-rails', groups: [:development, :test]
 end

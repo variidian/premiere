@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
-  # All routes must be inside this block
+  get "home/index"
+  # Login with Hack Club
+  get '/auth/hackclub', as: :login
+
+  # Callback after login
   get '/auth/:provider/callback', to: 'sessions#create'
+
+  # Failure
   get '/auth/failure', to: redirect('/')
-  
-  # ... other routes
+
+  # Your other routes
+  root "home#index"
 end

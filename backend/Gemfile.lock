@@ -363,6 +363,7 @@ DEPENDENCIES
   bundler-audit
   debug
   dotenv-rails
+  faraday
   image_processing (~> 1.2)
   kamal
   omniauth

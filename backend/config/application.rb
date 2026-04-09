@@ -33,6 +33,9 @@ module Backend
     config.session_store :cookie_store, key: '_interslice_session'
     
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_premiere_session'
+    config.middleware.use ActionDispatch::Flash
+    
+    require 'dotenv/load' if Rails.env.development? || Rails.env.test?
   end
 end
