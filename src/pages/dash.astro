@@ -7,10 +7,13 @@
 
 <script>
   const params = new URLSearchParams(window.location.search);
-  const uid = params.get('uid') || localStorage.getItem('uid');
-  if (params.get('uid')) localStorage.setItem('uid', params.get('uid'));
+  const token = params.get('token') || localStorage.getItem('token');
 
-  const res = await fetch(`/api/auth/me?uid=${uid}`);
+  if (params.get('token')) {
+    localStorage.setItem('token', params.get('token'));
+    window.history.replaceState({}, '', '/dash');
+  }
+  const res = await fetch(`/api/auth/me?token=${token}`);
   const user = await res.json();
 
   document.getElementById('welcome').textContent = `Welcome, ${user.name}!`;

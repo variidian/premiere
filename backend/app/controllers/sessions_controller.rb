@@ -24,11 +24,11 @@ class SessionsController < ApplicationController
       u.slack_id = info['identity']['slack_id']
     end
 
-    redirect_to "http://localhost:4321/dash?uid=#{user.id}"
+    redirect_to "http://localhost:4321/dash?token=#{user.token}"
   end
 
   def me
-    user = User.find_by(id: params[:uid])
+    user = User.find_by(token: params[:token])
     if user
       render json: {
         logged_in: true,
