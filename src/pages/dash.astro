@@ -1,9 +1,39 @@
 ---
+import '../../src/styles/global.css'
+import '../../src/styles/platform.css'
 ---
+<body class="bg-[#151767]">
 
-<h1 id="welcome">loading...</h1>
-<p id="email"></p>
-<p id="slack"></p>
+    <div class=" left-0 top-0 fixed">
+        <img src="navbar_flip.png" class="h-screen">
+        <img src="stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
+        <div class="z-10 absolute top-0 left-0 right-0">
+            <a href="/dash">
+            <img src="home_l.png" class="min-w-full">
+        </a>
+            <a href="/projects">
+            <img src="projects_d.png" class="min-w-full">
+            </a>
+            <a href="/gallery">
+            <img src="gallery_d.png" class="min-w-full">
+            </a>
+            <a href="/shop">
+            <img src="shop_d.png" class="min-w-full">
+            </a>
+            <a href="/refer">
+            <img src="refer_d.png" class="min-w-full">
+            </a>
+        </div>
+    </div>
+
+<div class=" ml-[58.9vh] p-8 text-center">
+<h1>Welcome to Premiere!</h1>
+<p class="mt-5">We haven't started yet - check back in on June 22nd. In the meanwhile, try <b>referring</b> other teenagers to enter into a raffle for <b>free prizes</b> like an <b>ikea blahaj.</b></p>
+<p class="mt-150">a</p>
+<p class="mt-150">a</p>
+<p class="mt-150">a</p>
+</div>
+</body>
 
 <script>
   const params = new URLSearchParams(window.location.search);
@@ -17,6 +47,4 @@
   const user = await res.json();
 
   document.getElementById('welcome').textContent = `Welcome, ${user.name}!`;
-  document.getElementById('email').textContent = `your email is ${user.email}`;
-  document.getElementById('slack').textContent = `your slack id is ${user.slack_id}`;
 </script>
