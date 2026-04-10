@@ -24,7 +24,17 @@ class SessionsController < ApplicationController
       u.slack_id = info['identity']['slack_id']
     end
 
-    redirect_to "/dash?token=#{user.token}"
+      cachet_uri = URI("https://cachet.dunkirk.sh/users/#{user.slack_id}")
+      cachet_req = Net::HTTP::Get.new(cachet_uri)
+      cachet_res = Net::HTTP.start(cachet_uri.hostname, cachet_uri.port, use_ssl: true) { |http| http.request(cachet_req) }
+      cachet_info = JSON.parse(cachet_res.body)
+
+      user.update(
+        avatar: cachet_info['imageUrl'],
+        display_name: cachet_info['displayName']
+      )
+
+    redirect_to "#{ENV['FRONTEND_URL'] || 'http://localhost:4321'}/dash?token=#{user.token}"
   end
 
   def me
@@ -35,6 +45,8 @@ class SessionsController < ApplicationController
         name: user.name,
         email: user.email,
         slack_id: user.slack_id,
+        display_name: user.display_name,
+        avatar: user.avatar,
         verification_status: user.verification_status
       }
     else

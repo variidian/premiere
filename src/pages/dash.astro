@@ -3,48 +3,56 @@ import '../../src/styles/global.css'
 import '../../src/styles/platform.css'
 ---
 <body class="bg-[#151767]">
-
     <div class=" left-0 top-0 fixed">
-        <img src="navbar_flip.png" class="h-screen">
+        <img src="navbar_.png" class="h-screen">
         <img src="stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
         <div class="z-10 absolute top-0 left-0 right-0">
             <a href="/dash">
-            <img src="home_l.png" class="min-w-full">
+            <img src="home_l.png" class="min-w-full lift">
         </a>
             <a href="/projects">
-            <img src="projects_d.png" class="min-w-full">
+            <img src="projects_d.png" class="min-w-full lift">
             </a>
             <a href="/gallery">
-            <img src="gallery_d.png" class="min-w-full">
+            <img src="gallery_d.png" class="min-w-full lift">
             </a>
             <a href="/shop">
-            <img src="shop_d.png" class="min-w-full">
+            <img src="shop_d.png" class="min-w-full lift">
             </a>
             <a href="/refer">
-            <img src="refer_d.png" class="min-w-full">
+            <img src="refer_d.png" class="min-w-full lift">
             </a>
         </div>
+    </div>
+
+    <div class="bottom-5 right-5 p-5 fixed bg-[#ff78cd] flex w-[25vw] h-[16vh] rounded-3xl lift">
+      <div class="h-full rounded-full overflow-hidden">
+        <img src="" class="object-contain w-full h-full" id="pfp">
+      </div>
+      <div class="content-center text-center flex-1 text-[1vw]">
+        <p id="username"></p>
+        <p>amount currency</p>
+      </div>
     </div>
 
 <div class=" ml-[58.9vh] p-8 text-center">
 <h1>Welcome to Premiere!</h1>
 <p class="mt-5">We haven't started yet - check back in on June 22nd. In the meanwhile, try <b>referring</b> other teenagers to enter into a raffle for <b>free prizes</b> like an <b>ikea blahaj.</b></p>
-<p class="mt-150">a</p>
-<p class="mt-150">a</p>
-<p class="mt-150">a</p>
 </div>
 </body>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get('token') || localStorage.getItem('token');
+  import { getUser } from '../scripts/auth.js';
 
+  //saves token from url after login
+  const params = new URLSearchParams(window.location.search);
   if (params.get('token')) {
     localStorage.setItem('token', params.get('token'));
     window.history.replaceState({}, '', '/dash');
   }
-  const res = await fetch(`/api/auth/me?token=${token}`);
-  const user = await res.json();
 
-  document.getElementById('welcome').textContent = `Welcome, ${user.name}!`;
+  const user = await getUser();
+  document.getElementById('pfp').src = user.avatar;
+  document.getElementById('username').textContent = `@${user.display_name}`;
+
 </script>
