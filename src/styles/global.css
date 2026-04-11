@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
 @import "tailwindcss";
 p {
     font-family: 'Fraunces';
@@ -17,7 +17,7 @@ li {
 
 h1 {
     font-size: 60px;
-    font-family: 'Bowlby One SC', sans-serif;
+    font-family: "DM Serif Display", serif;
     font-weight: 400;
     margin-left: 10px;
     margin-right: 10px;
@@ -40,6 +40,9 @@ input:focus {
 * {
     text-align: center;
 }
+a {
+  text-decoration: underline;
+}
 a:hover {
     text-decoration: underline;
     text-decoration-style: wavy;
@@ -49,7 +52,7 @@ h1:hover {
     transform: scale(1.05);
 }
 b:hover {
-    font-style: italic ;
+    font-style: italic;
 }
 button {
   font-family: 'Fraunces';
