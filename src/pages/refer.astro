@@ -1,0 +1,73 @@
+---
+import '../../src/styles/global.css'
+import '../../src/styles/platform.css'
+import UserBar from '../components/user.astro'
+---
+<body class="bg-[#151767]"> 
+
+<!--navbar -->
+    <div class=" left-0 top-0 fixed">
+        <img src="navbar_.png" class="h-screen">
+        <img src="stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
+        <div class="z-10 absolute top-0 left-0 right-0">
+            <a href="/dash">
+            <img src="home_d.png" class="min-w-full lift">
+        </a>
+            <a href="/projects">
+            <img src="projects_d.png" class="min-w-full lift">
+            </a>
+            <a href="/gallery">
+            <img src="gallery_d.png" class="min-w-full lift">
+            </a>
+            <a href="/shop">
+            <img src="shop_d.png" class="min-w-full lift">
+            </a>
+            <a href="/refer">
+            <img src="refer_l.png" class="min-w-full lift">
+            </a>
+        </div>
+    </div>
+
+<UserBar></UserBar>
+
+<div class=" ml-[58.9vh] p-20 text-center max-w-full">
+<div class="overflow-hidden">
+</div>
+<h1>Invite your friends!</h1>
+<p>For every person that joins Premiere through your link & submits an approved project, you'll earn a (new, separate currency) to spend in the shop!</p>
+
+<div class="bg-[#ff78cd] w-full rounded-3xl lift mt-10 pb-8">
+<h2 class="pl-5 pt-5">Your link is...</h2>
+
+<div class="flex flex-row">
+
+<div class="bg-[#ffc1e8] w-6/7 rounded-2xl ml-5 border-3 border-[#151767] border-dashed">
+<p class="pl-5 pt-2 !text-[#151767]">link here</p>
+</div>
+
+<div class="bg-[#ffc1e8] w-1/7 rounded-2xl ml-5 mr-5 border-3 border-[#151767] border-dashed">
+<p class="pt-2 !text-center !text-[#151767]">Copy</p>
+</div>
+
+
+</div>
+
+</div>
+</div>
+</body>
+
+<script>
+  import { getUser } from '../scripts/auth.js';
+
+  //saves token from url after login
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('token')) {
+    localStorage.setItem('token', params.get('token'));
+    window.history.replaceState({}, '', '/dash');
+  }
+
+  const user = await getUser();
+  document.getElementById('pfp').src = user.avatar;
+  document.getElementById('username').textContent = `@${user.display_name}`;
+
+</script>

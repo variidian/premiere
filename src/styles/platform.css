@@ -1,5 +1,6 @@
 * {
     color: #fff;
+    text-align: left;
 }
 .lift {
     transition: transform 0.2s ease-in-out;

@@ -23,6 +23,13 @@ h1 {
     margin-right: 10px;
     transition: transform 0.3s ease-in-out; 
 }
+h2 {
+  font-size: 30px;
+  font-family: "DM Serif Display", serif;
+  font-weight: 300;
+  margin-left: 10px;
+  margin-right: 10px;
+}
 input::placeholder {
   font-size: x-large;
   font-family: 'Fraunces';
@@ -36,9 +43,6 @@ form {
 }
 input:focus {
   outline: 0;
-}
-* {
-    text-align: center;
 }
 a {
   text-decoration: underline;
