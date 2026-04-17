@@ -12,3 +12,19 @@
       </div>
     </div>
   </div>
+  
+  <script>
+    import { getUser } from '../scripts/auth.js';
+  
+    //saves token from url after login
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('token')) {
+      localStorage.setItem('token', params.get('token'));
+      window.history.replaceState({}, '', '/dash');
+    }
+  
+    const user = await getUser();
+    document.getElementById('pfp').src = user.avatar;
+    document.getElementById('username').textContent = `@${user.display_name}`;
+  
+  </script>

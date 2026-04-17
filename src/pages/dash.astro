@@ -35,7 +35,7 @@ import UserBar from '../components/user.astro'
 <img src="premiere_banner.png" class="transition duration-500 hover:scale-130">
 </div>
 <h1>Welcome to Premiere!</h1>
-<p class="mt-5">We haven't started yet - check back in on June 22nd. In the meantime, try <b>referring</b> other teenagers to enter into a raffle for <b>free prizes</b> like an <b>ikea blahaj.</b></p>
+<p class="mt-5">We haven't started yet - check back in on June 22nd. In the meantime, try <b>referring</b> other teenagers to get some (currency) to redeem some <b>free prizes</b> like an <b>ikea blahaj.</b></p>
 </div>
 </body>
 
@@ -48,9 +48,5 @@ import UserBar from '../components/user.astro'
     localStorage.setItem('token', params.get('token'));
     window.history.replaceState({}, '', '/dash');
   }
-
-  const user = await getUser();
-  document.getElementById('pfp').src = user.avatar;
-  document.getElementById('username').textContent = `@${user.display_name}`;
 
 </script>
