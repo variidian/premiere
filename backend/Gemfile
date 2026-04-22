@@ -21,5 +21,8 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem 'dotenv-rails'
 
-gem 'pg', platforms: :ruby
+  gem 'sqlite3', '>= 2.1'
+
+  group :production do
+    gem 'pg'
 end
