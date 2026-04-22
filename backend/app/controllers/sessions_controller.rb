@@ -42,7 +42,7 @@ class SessionsController < ApplicationController #controller inheriting from App
         display_name: cachet_info['displayName']
       )
     #redirect to dashboard
-    redirect_to "#{ENV['FRONTEND_URL'] || 'http://localhost:4321'}/dash?token=#{user.token}"
+    redirect_to "#{ENV['FRONTEND_URL'] || 'http://localhost:4321'}/dash?token=#{user.token}", allow_other_host: true
   end #closes def create
 
   def me #defines action set in routes.rb
