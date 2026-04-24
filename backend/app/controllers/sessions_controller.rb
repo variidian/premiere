@@ -58,7 +58,9 @@ class SessionsController < ApplicationController #controller inheriting from App
         avatar: user.avatar,
         verification_status: user.verification_status,
         referred_by: user.referred_by,
-        referral_paid: user.referral_paid
+        referral_paid: user.referral_paid,
+        referrals: user.referrals,
+        clapperboards: user.clapperboards
       }
     else
       render json: { logged_in: false }, status: :unauthorized 
