@@ -55,9 +55,9 @@ import UserBar from '../components/user.astro'
 </body>
 
 <script>
-  import { getUser } from '../scripts/auth.js';
+  import { requireAuth } from '../scripts/auth.js';
 
-  const user = await getUser();
-  document.getElementById('referralUrl').textContent = `https://premiere.variidian.hackclub.app/?r=${user.slack_id}`;
+  const user = await requireAuth();
+  document.getElementById('referralUrl').textContent = `https://premiere-ysws.vercel.app/?r=${user.slack_id}`;
   document.getElementById('referred').textContent = `you were referred by ${user.referred_by}`;
 </script>

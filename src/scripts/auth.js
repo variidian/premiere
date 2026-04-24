@@ -5,3 +5,15 @@ export async function getUser() {
     const res = await fetch(`${API}/auth/me?token=${token}`);
     return await res.json();
 }
+export async function requireAuth() {
+    const user = await getUser();
+    if (!user || !user.logged_in) {
+        window.location.href = '/';
+        throw new Error('not logged in');
+    }
+    return user;
+}
+export function logout() {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+}

@@ -40,13 +40,14 @@ import UserBar from '../components/user.astro'
 </body>
 
 <script>
-  import { getUser } from '../scripts/auth.js';
+  import { requireAuth } from '../scripts/auth.js';
 
-  //saves token from url after login
+  // save token 
   const params = new URLSearchParams(window.location.search);
   if (params.get('token')) {
     localStorage.setItem('token', params.get('token'));
     window.history.replaceState({}, '', '/dash');
   }
 
+  const user = await requireAuth();
 </script>
