@@ -1,4 +1,4 @@
-require 'net/http' #ruby libraries
+require 'net/http' 
 require 'json'
 
 class SessionsController < ApplicationController #controller inheriting from ApplicationController
@@ -47,9 +47,8 @@ class SessionsController < ApplicationController #controller inheriting from App
 
   def me #defines action set in routes.rb
     user = User.find_by(token: params[:token]) #finds user with their token set in user.rb
-    if user #truthy check
+    if user 
       render json: { #rails api response
-        #user fields
         logged_in: true,
         name: user.name,
         email: user.email,

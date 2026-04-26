@@ -40,7 +40,7 @@ import UserBar from '../components/user.astro'
 </body>
 
 <script>
-  import { requireAuth } from '../scripts/auth.js';
+import { requireAuth } from '../scripts/auth.js';
 
   // save token 
   const params = new URLSearchParams(window.location.search);
@@ -48,6 +48,7 @@ import UserBar from '../components/user.astro'
     localStorage.setItem('token', params.get('token'));
     window.history.replaceState({}, '', '/dash');
   }
-
   const user = await requireAuth();
-</script>
+  document.getElementById('pfp').src = user.avatar;
+  document.getElementById('username').textContent = `@${user.display_name}`;
+  document.getElementById('clapperboards').textContent = `${user.clapperboards}`;

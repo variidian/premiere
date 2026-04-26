@@ -5,20 +5,28 @@
     <div class="content-center text-center flex-1 text-[1.3vw]">
       <p id="username"></p>
 
-      <div class="flex items-center">
+      <div class="flex">
         <p></p>
         <img src="clapperboard.svg" class="w-[1.3vw]">
-        <p id="clapperboards"class=""></p>
+        <p id="clapperboards">amount of clapperboards</p>
+        <div class="flex gap-2 ml-auto">
+        <button id="logout-btn">
+          <img src="door.svg" class="w-[1.3vw]  transition duration-300 hover:scale-120">
+        </button>
+        <a href="/settings" class="flex">
+        <img src="settings.svg" class="w-[1.3vw]  transition duration-300 hover:scale-120">
+      </a>
+      </div>
       </div>
     </div>
   </div>
   
   <script>
-    import { requireAuth } from '../scripts/auth.js';
-  
-    const user = await requireAuth();
-  
+    import { getUser,logout } from '../scripts/auth.js';
+
+    const user = await getUser();
     document.getElementById('pfp').src = user.avatar;
     document.getElementById('username').textContent = `@${user.display_name}`;
     document.getElementById('clapperboards').textContent = `${user.clapperboards}`;
+    document.getElementById('logout-btn').addEventListener('click', logout);
   </script>
