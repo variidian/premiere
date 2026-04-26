@@ -71,9 +71,6 @@ button {
   }
   
   .hero-image {
-    animation: fadeOut linear forwards;
-    animation-timeline: view();
-    animation-range: 30% 50%;
     position: sticky;
     top: 0;
   }
