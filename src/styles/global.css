@@ -74,6 +74,12 @@ button {
     position: sticky;
     top: 0;
   }
+
+ 
+
+  .EasyMDEContainer .CodeMirror {
+    background-color: #fb4bb0; 
+}
 ::-webkit-scrollbar { display: none; }
 scrollbar-width: none; 
 
