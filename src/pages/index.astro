@@ -3,12 +3,8 @@ import '../../src/styles/global.css'
 import Accordion from '../components/accordion.astro'
 const AccordionItems = [
 	{
-		question: "Where can i find more info?",
-		answer: "<p>Check out the #README file in the #premiere slack channel.</p>"
-	},
-	{
 		question: "Can i use AI?",
-		answer: "<p>No art or music can be made with ai, and anything else it's used for is limited to being 20% of your project. You must also put a disclaimer in your repo with what components ai was used for. </p>"
+		answer: "<p>You cannot use AI to create assets nor write READMEs. Anything else it's used for is limited to being 30% of your project. You must also put a disclaimer in your repo with what components ai was used for. </p>"
 	},
 	{
 		question: "Can i use resources i find online?",
@@ -57,19 +53,19 @@ const AccordionItems = [
 		<p class="!text-3xl nono pop z-21">Ship <b>a trailer</b> to <b>your game</b> and we'll ship you <b class="prize"></b></p> 
 		<p class="">this way, your game will reach more people & you'll get prizes for doing it.</p>
 		<div class="relative">
-			<button class="rounded-full top-30 block absolute m-auto left-0 right-0 bg-[#f6f3e0] p-5 w-[30vw] form border-4 border-[#101250] hover:border-6 mt-20 z-6 text-2xl" id="login-btn">login with hackclub</button>
-			<div class="bg-[#101250] rounded-full block absolute m-auto left-4 right-0 p-10 w-[30vw] mt-50 top-3 z-5 extend"></div>
+			<button class="rounded-full top-30 block absolute m-auto left-0 right-0 bg-[#f6f3e0] p-5 w-80 form border-4 border-[#101250] hover:border-6 mt-20 z-6 text-2xl" id="login-btn">login with hackclub</button>
+			<div class="bg-[#101250] rounded-full block absolute m-auto left-4 right-0 p-10 w-80 mt-50 top-3 z-5 extend"></div>
 		</div>
 		<p class="pb-120"></p>
 	</div>
 	<div class="relative w-screen">
-	<div class=" bg-[url(/yellow.png)] bg-screen h-[1894px] z-10 -top-130 absolute bg-no-repeat bg-bottom text-[#000] pr-30 pl-30">
+	<div class=" bg-[url(/yellow.png)] w-screen h-[1894px] z-10 -top-130 absolute bg-no-repeat bg-bottom text-[#000] pr-10 pl-10">
 		<h1 class="pt-160 z-30 mb-10">How does premiere work?</h1>
 		<div class="flex flex-wrap items-center">
-		<img class=" w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200" src="/card1.png" alt="build a game of your own, be creative!">
-		<img class=" card w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card2.png" alt="make a trailer to your game! screen record, animate, etc!">
-		<img class="  w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200"src="/card3.png" alt="Publish to Itch.io, Github, and make social media posts!">
-		<img class=" card w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card4.png" alt="GET FREE STUFF!!!">
+		<img class="w-1/2 md:w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200" src="/card1.png" alt="build a game of your own, be creative!">
+		<img class="w-1/2 card md:w-1/4 transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card2.png" alt="make a trailer to your game! screen record, animate, etc!">
+		<img class="w-1/2 md:w-1/4 transition-all duration-300 ease-in-out hover:rotate-6 hover:scale-110 hover:saturate-200"src="/card3.png" alt="Publish to Itch.io, Github, and make social media posts!">
+		<img class="w-1/2 card md:w-1/4  transition-all duration-300 ease-in-out hover:-rotate-6 hover:scale-110 hover:saturate-200"src="/card4.png" alt="GET FREE STUFF!!!">
 	</div>
 	</div>
 </div>
@@ -88,7 +84,7 @@ const AccordionItems = [
 	</div>
 </div>
 <div class="relative">
-<div class="bg-[url(/black.png)] absolute bg-screen bg-screen w-screen bg-bottom pb-10 pt-720 z-4 text-white bg-no-repeat">
+<div class="bg-[url(/black.png)] absolute bg-screen bg-screen w-screen bg-bottom pb-10 pt-720 -top-65 z-4 text-white bg-no-repeat">
 	<h1>faq</h1>
 	{AccordionItems.map((item) => (
 		<Accordion
