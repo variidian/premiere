@@ -6,15 +6,37 @@ interface Props {
 const {question, answer } = Astro.props
 import '../../src/styles/global.css'
 ---
-<button class="accordion"><p>{question}</p></button>
+<button class="accordion"><p class="pl-2">{question}</p></button>
 <div class="panel" set:html={answer}>
 </div>
 <style>
 .accordion {
     width: 70vw;
-    height: 90px;
+    min-height: 90px;
     border-bottom: 2px solid #fff;
-    
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+    padding-right: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.accordion:after {
+    content: '\002B';
+    color: #ffffff;
+    font-weight: bold;
+    font-size: xx-large;
+
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.active:after {
+    content: "\2212";
 }
 .small {
   font-size: smaller;
