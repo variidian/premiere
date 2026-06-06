@@ -6,7 +6,7 @@ import UserBar from '../components/user.astro'
 <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 
-<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
+<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover mb-15">
 
   <!--navbar -->
     <div class=" left-0 top-0 fixed">
@@ -44,9 +44,9 @@ import UserBar from '../components/user.astro'
 
     <div class="dropdown relative inline">
       <button class="dropbtn rounded-xl p-2 bg-[#ff78cd]">+ project</button>
-      <div class="dropdown-content hidden absolute z-10 bg-[#ff78cd] mt-2 p-2 rounded-xl">
-        <a >hackatime proj 1</a>
-        <a >hackatime proj 2</a>
+      <div class="dropdown-content hidden absolute z-10 bg-[#ff78cd] mt-2 p-1 rounded-xl">
+        <a>hackatime proj 1</a>
+        <a>hackatime proj 2</a>
       </div>
     </div>
 
@@ -60,6 +60,13 @@ import UserBar from '../components/user.astro'
 <script>
 import { requireAuth } from '../scripts/auth.js';
 
+const btn = document.querySelector('.dropbtn');
+const menu = document.querySelector('.dropdown-content');
+
+btn?.addEventListener("click",showdropdown);
+function showdropdown() {
+  menu.classList.toggle('hidden');
+}
 //markdown support for editing da devlog
 const easyMDE = new EasyMDE({
     element: document.getElementById('publish-devlog'),
