@@ -37,14 +37,13 @@ import UserBar from '../components/user.astro'
 <div class="overflow-hidden">
 <img src="premiere_banner.png" class="rounded-xl transition duration-500 hover:scale-130">
 </div>
-<h1>Welcome to Premiere!</h1>
 <div class="p-5 bg-[#fb4bb0] rounded-xl mt-10">
 <textarea class="w-full focus:outline-none" id="publish-devlog" name='publish-devlog' placeholder="what have you made today? (hey - this textbox has markdown support!)"></textarea>
   <div class="flex flex-row">
 
     <div class="dropdown relative inline">
       <button class="dropbtn rounded-xl p-2 bg-[#ff78cd]">+ project</button>
-      <div class="dropdown-content hidden absolute z-10 bg-[#ff78cd] mt-2 p-1 rounded-xl">
+      <div class="dropdown-content hidden flex flex-col absolute z-10 bg-[#ff78cd] mt-2 p-2 w-sm rounded-xl">
         <a>hackatime proj 1</a>
         <a>hackatime proj 2</a>
       </div>
