@@ -1,0 +1,43 @@
+---
+import '../../src/styles/global.css'
+import '../../src/styles/platform.css'
+import UserBar from '../components/user.astro'
+---
+<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
+<!--navbar -->
+    <div class=" left-0 top-0 fixed">
+        <img src="navbar_.png" class="h-screen">
+        <img src="stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
+        <div class="z-10 absolute top-0 left-0 right-0">
+            <a href="/dash">
+            <img src="home_d.png" class="min-w-full lift">
+        </a>
+            <a href="/projects">
+            <img src="projects_l.png" class="min-w-full lift">
+            </a>
+            <a href="/gallery">
+            <img src="gallery_d.png" class="min-w-full lift">
+            </a>
+            <a href="/shop">
+            <img src="shop_d.png" class="min-w-full lift">
+            </a>
+            <a href="/refer">
+            <img src="refer_d.png" class="min-w-full lift">
+            </a>
+        </div>
+    </div>
+
+<UserBar></UserBar>
+<div class=" ml-[58.9vh] p-20 text-center max-w-full">
+    <div class="overflow-hidden">
+<h1>Make something cool!</h1>
+<p>The hours you spend working on your project will count towards getting prizes :)</p>
+</div>
+</div>
+</body>
+
+<script>
+  import { requireAuth } from '../scripts/auth.js';
+
+  const user = await requireAuth();
+</script>
