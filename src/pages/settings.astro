@@ -30,7 +30,13 @@ import UserBar from '../components/user.astro'
 <UserBar></UserBar>
 <div class=" ml-[58.9vh] p-20 text-center max-w-full">
     <div class="overflow-hidden">
-        
+        <h1>Settings</h1>
+</div>
+<div class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
+  <h2>Account</h2>
+  <p id="settings-name"></p>
+  <a id="admin-referrals-link" class="hidden inline-block rounded-xl p-3 bg-[#ff78cd] mt-3 no-underline" href="/admin/referrals">review referrals</a>
+  <a id="admin-projects-link" class="hidden inline-block rounded-xl p-3 bg-[#ff78cd] mt-3 ml-3 no-underline" href="/admin/projects">review projects</a>
 </div>
 </div>
 </body>
@@ -39,4 +45,9 @@ import UserBar from '../components/user.astro'
   import { requireAuth } from '../scripts/auth.js';
 
   const user = await requireAuth();
+  document.getElementById('settings-name').textContent = `${user.display_name || user.name}`;
+  if (user.admin) {
+    document.getElementById('admin-referrals-link').classList.remove('hidden');
+    document.getElementById('admin-projects-link').classList.remove('hidden');
+  }
 </script>

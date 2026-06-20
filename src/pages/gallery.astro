@@ -34,11 +34,51 @@ import UserBar from '../components/user.astro'
 <h1>Gallery</h1>
 <p>Take a look at what other cool projects people have submitted to Premiere!</p>
 </div>
+
+<div id="gallery-projects" class="grid grid-cols-2 gap-6 mt-10"></div>
 </div>
 </body>
 
 <script>
-  import { requireAuth } from '../scripts/auth.js';
+  import { API, requireAuth } from '../scripts/auth.js';
 
-  const user = await requireAuth();
+  const gallery = document.getElementById('gallery-projects');
+
+  function escapeHtml(value = '') {
+    return value.replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[char]));
+  }
+
+  function renderProjects(projects) {
+    if (!projects.length) {
+      gallery.innerHTML = '<p>No submitted projects yet.</p>';
+      return;
+    }
+
+    gallery.innerHTML = projects.map((project) => `
+      <article class="bg-[#fb4bb0] rounded-xl p-5 lift">
+        <div class="flex items-center gap-3 mb-3">
+          ${project.author.avatar ? `<img src="${project.author.avatar}" class="w-12 h-12 rounded-full">` : ''}
+          <p>${escapeHtml(project.author.display_name || 'Premiere maker')}</p>
+        </div>
+        <h2>${escapeHtml(project.name)}</h2>
+        <p>Status: ${escapeHtml(project.status)}</p>
+        <p>Hackatime: ${escapeHtml(project.hackatime_project)}</p>
+        ${project.description ? `<p>${escapeHtml(project.description)}</p>` : ''}
+        <div class="flex flex-wrap gap-3 mt-3">
+          ${project.repository_url ? `<a href="${project.repository_url}" target="_blank" rel="noreferrer">repo</a>` : ''}
+          ${project.demo_url ? `<a href="${project.demo_url}" target="_blank" rel="noreferrer">demo</a>` : ''}
+        </div>
+      </article>
+    `).join('');
+  }
+
+  await requireAuth();
+  const res = await fetch(`${API}/projects/accepted`);
+  renderProjects(await res.json());
 </script>

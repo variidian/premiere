@@ -39,64 +39,148 @@ import UserBar from '../components/user.astro'
 </div>
 <div class="p-5 bg-[#fb4bb0] rounded-xl mt-10">
 <textarea class="w-full focus:outline-none" id="publish-devlog" name='publish-devlog' placeholder="what have you made today? (hey - this textbox has markdown support!)"></textarea>
-  <div class="flex flex-row">
+  <div class="flex flex-row items-start gap-3">
 
     <div class="dropdown relative inline">
-      <button class="dropbtn rounded-xl p-2 bg-[#ff78cd]">+ project</button>
-      <div class="dropdown-content hidden flex flex-col absolute z-10 bg-[#ff78cd] mt-2 p-2 w-sm rounded-xl">
-        <a>hackatime proj 1</a>
-        <a>hackatime proj 2</a>
+      <button class="dropbtn rounded-xl p-2 bg-[#ff78cd]" id="selected-project" type="button">choose project</button>
+      <div class="dropdown-content hidden flex flex-col absolute z-10 bg-[#ff78cd] mt-2 p-2 w-sm rounded-xl" id="project-menu">
+        <a href="/projects">create a project first</a>
       </div>
     </div>
 
-    <button class="ml-3 rounded-xl p-2 bg-[#ff78cd]">publish!</button>
+    <button class="rounded-xl p-2 bg-[#ff78cd]" id="publish-btn" type="button">publish!</button>
     </div>
+    <p id="publish-status" class="mt-3"></p>
+</div>
+
+<div class="mt-10 p-5 bg-[#fb4bb0] rounded-xl">
+  <h2>Recent devlogs</h2>
+  <div id="devlog-feed" class="flex flex-col gap-4 mt-4"></div>
 </div>
 
 </div>
 </body>
 
 <script>
-import { requireAuth } from '../scripts/auth.js';
+import { API, requireAuth } from '../scripts/auth.js';
 
 const btn = document.querySelector('.dropbtn');
 const menu = document.querySelector('.dropdown-content');
+const projectButton = document.getElementById('selected-project');
+const publishButton = document.getElementById('publish-btn');
+const publishStatus = document.getElementById('publish-status');
+const devlogFeed = document.getElementById('devlog-feed');
+let selectedProject = null;
 
-btn?.addEventListener("click",showdropdown);
+btn?.addEventListener("click", showdropdown);
 function showdropdown() {
   menu.classList.toggle('hidden');
 }
+
 //markdown support for editing da devlog
 const easyMDE = new EasyMDE({
-    element: document.getElementById('publish-devlog'),
-    spellChecker: false,
-    minHeight: "100px"
+  element: document.getElementById('publish-devlog'),
+  spellChecker: false,
+  minHeight: "100px"
+});
+
+function escapeHtml(value = '') {
+  return value.replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+async function loadProjects() {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API}/projects?token=${encodeURIComponent(token)}`);
+  const projects = await res.json();
+  menu.innerHTML = '';
+
+  if (!projects.length) {
+    menu.innerHTML = '<a href="/projects">create a project first</a>';
+    return;
+  }
+
+  projects.forEach((project) => {
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'text-left p-2 rounded-lg hover:bg-[#fb4bb0]';
+    item.textContent = `${project.name} (${project.hackatime_project})`;
+    item.addEventListener('click', () => {
+      selectedProject = project;
+      projectButton.textContent = project.name;
+      menu.classList.add('hidden');
+    });
+    menu.appendChild(item);
   });
 
-  //publishing / creating new devlogs
-  async function publish_log() {
-      const token = localStorage.getItem('token');
-      if (!token) return null;
-      const res = await fetch(`${API}/devlogs`, {
-      method: 'POST',
-      headers: { //indicates its formatted as json
-      'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ 
-      token: token,
-      content: easyMDE.value()
-  })
-});
-      const data = await res.json();
+  selectedProject = projects[0];
+  projectButton.textContent = projects[0].name;
+}
+
+async function loadDevlogs() {
+  const res = await fetch(`${API}/devlogs`);
+  const devlogs = await res.json();
+  devlogFeed.innerHTML = devlogs.map((devlog) => `
+    <article class="bg-[#ff78cd] rounded-xl p-4">
+      <div class="flex items-center gap-3 mb-3">
+        ${devlog.author.avatar ? `<img src="${devlog.author.avatar}" class="w-10 h-10 rounded-full">` : ''}
+        <p>${escapeHtml(devlog.author.display_name || 'Premiere maker')}</p>
+      </div>
+      ${devlog.project ? `<p><b>${escapeHtml(devlog.project.name)}</b> - Hackatime: ${escapeHtml(devlog.project.hackatime_project)}</p>` : ''}
+      <p>${escapeHtml(devlog.content).replace(/\n/g, '<br>')}</p>
+    </article>
+  `).join('');
+}
+
+//publishing / creating new devlogs
+async function publish_log() {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+  if (!selectedProject) {
+    publishStatus.textContent = 'Choose or create a project before publishing.';
+    return;
   }
 
-  // save token 
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('token')) {
-    localStorage.setItem('token', params.get('token'));
-    window.history.replaceState({}, '', '/dash');
+  const res = await fetch(`${API}/devlogs`, {
+    method: 'POST',
+    headers: { //indicates its formatted as json
+      'Content-Type': 'application/json',
+      'X-User-Token': token
+    },
+    body: JSON.stringify({ 
+      token: token,
+      project_id: selectedProject.id,
+      content: easyMDE.value()
+    })
+  });
+  const data = await res.json();
+
+  if (!res.ok) {
+    publishStatus.textContent = data.errors?.join(', ') || data.error || 'Could not publish devlog.';
+    return;
   }
-  const user = await requireAuth();
-  document.getElementById('pfp').src = user.avatar;
-  document.getElementById('username').textContent = `@${user.display_name}`;
-  document.getElementById('clapperboards').textContent = `${user.clapperboards}`;
+
+  easyMDE.value('');
+  publishStatus.textContent = 'Published!';
+  await loadDevlogs();
+}
+publishButton.addEventListener('click', publish_log);
+
+// save token 
+const params = new URLSearchParams(window.location.search);
+if (params.get('token')) {
+  localStorage.setItem('token', params.get('token'));
+  window.history.replaceState({}, '', '/dash');
+}
+const user = await requireAuth();
+document.getElementById('pfp').src = user.avatar;
+document.getElementById('username').textContent = `@${user.display_name}`;
+document.getElementById('clapperboards').textContent = `${user.clapperboards}`;
+await loadProjects();
+await loadDevlogs();
+</script>

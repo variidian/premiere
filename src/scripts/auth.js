@@ -1,4 +1,4 @@
-const API = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
+export const API = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
 
 export async function getUser() {
     const token = localStorage.getItem('token');

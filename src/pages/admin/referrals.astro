@@ -1,0 +1,105 @@
+---
+import '../../../src/styles/global.css'
+import '../../../src/styles/platform.css'
+import UserBar from '../../components/user.astro'
+---
+<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
+<div class=" left-0 top-0 fixed">
+    <img src="/navbar_.png" class="h-screen">
+    <img src="/stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
+    <div class="z-10 absolute top-0 left-0 right-0">
+        <a href="/dash"><img src="/home_d.png" class="min-w-full lift"></a>
+        <a href="/projects"><img src="/projects_d.png" class="min-w-full lift"></a>
+        <a href="/gallery"><img src="/gallery_d.png" class="min-w-full lift"></a>
+        <a href="/shop"><img src="/shop_d.png" class="min-w-full lift"></a>
+        <a href="/refer"><img src="/refer_d.png" class="min-w-full lift"></a>
+    </div>
+</div>
+
+<UserBar></UserBar>
+<div class=" ml-[58.9vh] p-20 text-center max-w-full">
+  <h1>Review referrals</h1>
+  <div id="referral-list" class="flex flex-col gap-4 mt-10"></div>
+</div>
+</body>
+
+<script>
+  import { API, requireAuth } from '../../scripts/auth.js';
+
+  const list = document.getElementById('referral-list');
+
+  function escapeHtml(value = '') {
+    return value.replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[char]));
+  }
+
+  async function approveReferral(id) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}/admin/referrals/${id}/approve`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-Token': token
+      },
+      body: JSON.stringify({ token })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || 'Could not approve referral.');
+      return;
+    }
+    await loadReferrals();
+  }
+
+  function renderReferrals(referrals) {
+    if (!referrals.length) {
+      list.innerHTML = '<p>No pending referrals.</p>';
+      return;
+    }
+
+    list.innerHTML = '';
+    referrals.forEach((referral) => {
+      const article = document.createElement('article');
+      article.className = 'bg-[#fb4bb0] rounded-xl p-5';
+      article.innerHTML = `
+        <div class="flex items-center gap-3 mb-3">
+          ${referral.avatar ? `<img src="${referral.avatar}" class="w-12 h-12 rounded-full">` : ''}
+          <div>
+            <h2>${escapeHtml(referral.display_name || referral.name || 'New user')}</h2>
+            <p>${escapeHtml(referral.email || '')}</p>
+            <p>Slack: ${escapeHtml(referral.slack_id || '')}</p>
+          </div>
+        </div>
+        <p>Referral code: ${escapeHtml(referral.referred_by || '')}</p>
+        <p>Referrer: ${escapeHtml(referral.referrer?.display_name || referral.referrer?.slack_id || 'not found yet')}</p>
+        <button class="rounded-xl p-3 bg-[#ff78cd] mt-3" type="button">award clapperboard</button>
+      `;
+      article.querySelector('button').addEventListener('click', () => approveReferral(referral.id));
+      list.appendChild(article);
+    });
+  }
+
+  async function loadReferrals() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}/admin/referrals?token=${encodeURIComponent(token)}`, {
+      headers: { 'X-User-Token': token }
+    });
+    if (res.status === 403) {
+      list.innerHTML = '<p>Admin only.</p>';
+      return;
+    }
+    renderReferrals(await res.json());
+  }
+
+  const user = await requireAuth();
+  if (!user.admin) {
+    list.innerHTML = '<p>Admin only.</p>';
+  } else {
+    await loadReferrals();
+  }
+</script>

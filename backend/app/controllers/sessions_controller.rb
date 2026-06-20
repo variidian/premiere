@@ -59,7 +59,9 @@ class SessionsController < ApplicationController #controller inheriting from App
         referred_by: user.referred_by,
         referral_paid: user.referral_paid,
         referrals: user.referrals,
-        clapperboards: user.clapperboards
+        clapperboards: user.clapperboards,
+        hackatime_connected: user.hackatime_access_token.present?,
+        admin: user.admin?
       }
     else
       render json: { logged_in: false }, status: :unauthorized 

@@ -1,0 +1,138 @@
+---
+import '../../../src/styles/global.css'
+import '../../../src/styles/platform.css'
+import UserBar from '../../components/user.astro'
+---
+<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
+<div class=" left-0 top-0 fixed">
+    <img src="/navbar_.png" class="h-screen">
+    <img src="/stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
+    <div class="z-10 absolute top-0 left-0 right-0">
+        <a href="/dash"><img src="/home_d.png" class="min-w-full lift"></a>
+        <a href="/projects"><img src="/projects_l.png" class="min-w-full lift"></a>
+        <a href="/gallery"><img src="/gallery_d.png" class="min-w-full lift"></a>
+        <a href="/shop"><img src="/shop_d.png" class="min-w-full lift"></a>
+        <a href="/refer"><img src="/refer_d.png" class="min-w-full lift"></a>
+    </div>
+</div>
+
+<UserBar></UserBar>
+<div class=" ml-[58.9vh] p-20 text-center max-w-full">
+  <h1>New project</h1>
+
+  <form id="project-form" class="bg-[#fb4bb0] rounded-xl p-5 mt-10 flex flex-col gap-3">
+    <input class="rounded-xl p-3 bg-[#ff78cd]" id="project-name" name="name" placeholder="project name" required>
+    <textarea class="rounded-xl p-3 bg-[#ff78cd] min-h-32 focus:outline-none" id="project-description" name="description" placeholder="what are you making?" required></textarea>
+    <input class="rounded-xl p-3 bg-[#ff78cd]" id="repository-url" name="repository_url" placeholder="repo link">
+    <input class="rounded-xl p-3 bg-[#ff78cd]" id="demo-url" name="demo_url" placeholder="demo link">
+    <input class="rounded-xl p-3 bg-[#ff78cd]" id="image-url" name="image_url" placeholder="image link">
+    <div id="hackatime-connect" class="bg-[#ff78cd] rounded-xl p-3">
+      <p>Link Hackatime to choose the matching project and hours before shipping.</p>
+      <a id="hackatime-link" class="inline-block rounded-xl p-2 bg-[#fb4bb0] mt-2 no-underline">connect Hackatime</a>
+    </div>
+    <div id="hackatime-fields" class="hidden">
+      <select class="rounded-xl p-3 bg-[#ff78cd] w-full" id="hackatime-selection">
+        <option value="">choose a Hackatime project</option>
+      </select>
+      <input type="hidden" id="hackatime-project" name="hackatime_project">
+      <input type="hidden" id="hackatime-hours" name="hackatime_hours">
+    </div>
+    <button class="rounded-xl p-3 bg-[#ff78cd]" type="submit">create project</button>
+    <p id="project-status"></p>
+  </form>
+</div>
+</body>
+
+<script>
+  import { API, requireAuth } from '../../scripts/auth.js';
+
+  const connectBox = document.getElementById('hackatime-connect');
+  const connectLink = document.getElementById('hackatime-link');
+  const hackatimeFields = document.getElementById('hackatime-fields');
+  const form = document.getElementById('project-form');
+  const hackatimeSelect = document.getElementById('hackatime-selection');
+  const projectInput = document.getElementById('hackatime-project');
+  const hoursInput = document.getElementById('hackatime-hours');
+  const status = document.getElementById('project-status');
+  let hackatimeProjects = [];
+
+  function showHackatimeConnect(message = 'Link Hackatime to choose the matching project and hours before shipping.') {
+    const token = localStorage.getItem('token');
+    connectBox.classList.remove('hidden');
+    hackatimeFields.classList.add('hidden');
+    connectBox.querySelector('p').textContent = message;
+    connectLink.href = `${API}/hackatime/connect?token=${encodeURIComponent(token)}`;
+  }
+
+  function showHackatimeFields(projects) {
+    hackatimeProjects = projects;
+    connectBox.classList.add('hidden');
+    hackatimeFields.classList.remove('hidden');
+    hackatimeSelect.innerHTML = '<option value="">choose a Hackatime project</option>';
+
+    projects.forEach((project, index) => {
+      const option = document.createElement('option');
+      option.value = String(index);
+      option.textContent = project.hours ? `${project.name} - ${project.hours} hours` : project.name;
+      hackatimeSelect.appendChild(option);
+    });
+  }
+
+  hackatimeSelect.addEventListener('change', () => {
+    const selected = hackatimeProjects[Number(hackatimeSelect.value)];
+    projectInput.value = selected?.name || '';
+    hoursInput.value = selected?.hours || '';
+  });
+
+  async function loadHackatimeProjects() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}/hackatime/projects?token=${encodeURIComponent(token)}`, {
+      headers: { 'X-User-Token': token }
+    });
+
+    if (res.status === 401) {
+      showHackatimeConnect();
+      return;
+    }
+
+    const data = await res.json();
+    if (!res.ok) {
+      showHackatimeConnect();
+      return;
+    }
+
+    if (!data.projects?.length) {
+      showHackatimeConnect('Hackatime is linked, but the API did not return any projects with hours yet.');
+      return;
+    }
+
+    showHackatimeFields(data.projects);
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    status.textContent = 'Creating...';
+    const payload = Object.fromEntries(new FormData(form).entries());
+    const res = await fetch(`${API}/projects`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-Token': token
+      },
+      body: JSON.stringify({ token, ...payload })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      status.textContent = data.errors?.join(', ') || data.error || 'Could not create project.';
+      return;
+    }
+
+    window.location.href = '/projects';
+  });
+
+  await requireAuth();
+  showHackatimeConnect();
+  await loadHackatimeProjects();
+</script>
