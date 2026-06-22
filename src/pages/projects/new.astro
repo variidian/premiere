@@ -12,7 +12,6 @@ import UserBar from '../../components/user.astro'
         <a href="/projects"><img src="/projects_l.png" class="min-w-full lift"></a>
         <a href="/gallery"><img src="/gallery_d.png" class="min-w-full lift"></a>
         <a href="/shop"><img src="/shop_d.png" class="min-w-full lift"></a>
-        <a href="/refer"><img src="/refer_d.png" class="min-w-full lift"></a>
     </div>
 </div>
 
@@ -56,11 +55,19 @@ import UserBar from '../../components/user.astro'
   const status = document.getElementById('project-status');
   let hackatimeProjects = [];
 
-  function showHackatimeConnect(message = 'Link Hackatime to choose the matching project and hours before shipping.') {
+  function showHackatimeConnect(message = 'Link Hackatime to choose the matching project and hours before shipping.', connected = false) {
+    if (connected) {
+      connectBox.classList.remove('hidden');
+      hackatimeFields.classList.add('hidden');
+      connectBox.querySelector('p').textContent = message;
+      connectLink.classList.add('hidden');
+      return;
+    }
     const token = localStorage.getItem('token');
     connectBox.classList.remove('hidden');
     hackatimeFields.classList.add('hidden');
     connectBox.querySelector('p').textContent = message;
+    connectLink.classList.remove('hidden');
     connectLink.href = `${API}/hackatime/connect?token=${encodeURIComponent(token)}`;
   }
 
@@ -102,7 +109,7 @@ import UserBar from '../../components/user.astro'
     }
 
     if (!data.projects?.length) {
-      showHackatimeConnect('Hackatime is linked, but the API did not return any projects with hours yet.');
+      showHackatimeConnect('Hackatime is linked, but the API did not return any projects with hours yet.', !!data.connected);
       return;
     }
 
@@ -129,7 +136,7 @@ import UserBar from '../../components/user.astro'
       return;
     }
 
-    window.location.href = '/projects';
+    window.location.href = `/projects/${data.id}/manage`;
   });
 
   await requireAuth();

@@ -26,7 +26,7 @@ module Backend
         origins 'http://localhost:4321', 'https://premiere-ysws.vercel.app'
         resource '*',
           headers: :any,
-          methods: [:get, :post, :options],
+          methods: [:get, :post, :patch, :options],
           credentials: true
       end
     end

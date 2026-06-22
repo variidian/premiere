@@ -21,9 +21,6 @@ import UserBar from '../components/user.astro'
             <a href="/shop">
             <img src="shop_d.png" class="min-w-full lift">
             </a>
-            <a href="/refer">
-            <img src="refer_d.png" class="min-w-full lift">
-            </a>
         </div>
     </div>
 
@@ -35,8 +32,6 @@ import UserBar from '../components/user.astro'
 <div class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
   <h2>Account</h2>
   <p id="settings-name"></p>
-  <a id="admin-referrals-link" class="hidden inline-block rounded-xl p-3 bg-[#ff78cd] mt-3 no-underline" href="/admin/referrals">review referrals</a>
-  <a id="admin-projects-link" class="hidden inline-block rounded-xl p-3 bg-[#ff78cd] mt-3 ml-3 no-underline" href="/admin/projects">review projects</a>
 </div>
 </div>
 </body>
@@ -46,8 +41,4 @@ import UserBar from '../components/user.astro'
 
   const user = await requireAuth();
   document.getElementById('settings-name').textContent = `${user.display_name || user.name}`;
-  if (user.admin) {
-    document.getElementById('admin-referrals-link').classList.remove('hidden');
-    document.getElementById('admin-projects-link').classList.remove('hidden');
-  }
 </script>

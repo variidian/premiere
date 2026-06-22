@@ -1,0 +1,306 @@
+---
+import '../../../../src/styles/global.css'
+import '../../../../src/styles/platform.css'
+import UserBar from '../../../components/user.astro'
+
+export function getStaticPaths() {
+  return [{ params: { id: '0' } }];
+}
+
+const { id } = Astro.params;
+---
+<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover">
+<div class="left-0 top-0 fixed">
+  <img src="/navbar_.png" class="h-screen">
+  <img src="/stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9]">
+  <div class="z-10 absolute top-0 left-0 right-0">
+    <a href="/dash"><img src="/home_d.png" class="min-w-full lift"></a>
+    <a href="/projects"><img src="/projects_l.png" class="min-w-full lift"></a>
+    <a href="/gallery"><img src="/gallery_d.png" class="min-w-full lift"></a>
+    <a href="/shop"><img src="/shop_d.png" class="min-w-full lift"></a>
+  </div>
+</div>
+
+<UserBar></UserBar>
+
+<div class="ml-[58.9vh] p-20 text-center max-w-full relative">
+  <span id="status-badge" class="hidden absolute top-8 right-8 rounded-xl px-4 py-2 bg-[#ff78cd] text-sm uppercase tracking-wide"></span>
+
+  <a href="/projects" class="inline-block mb-6 no-underline">&larr; back to projects</a>
+  <h1 id="page-title">Manage project</h1>
+
+  <div id="loading" class="bg-[#fb4bb0] rounded-xl p-5 mt-10">Loading...</div>
+  <div id="project-content" class="hidden"></div>
+</div>
+</body>
+
+<script define:vars={{ fallbackId: id }}>
+  import { API, requireAuth } from '../../../scripts/auth.js';
+
+  const FILLOUT_FORM_URL = import.meta.env.PUBLIC_FILLOUT_FORM_URL || 'https://forms.fillout.com/t/premiere-project-submission';
+  const projectId = window.location.pathname.match(/\/projects\/(\d+)\/manage/)?.[1] || fallbackId;
+  const loading = document.getElementById('loading');
+  const content = document.getElementById('project-content');
+  const statusBadge = document.getElementById('status-badge');
+  const pageTitle = document.getElementById('page-title');
+
+  let user = null;
+  let project = null;
+  let hackatimeProjects = [];
+  let hackatimeConnected = false;
+
+  function escapeHtml(value = '') {
+    return String(value).replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[char]));
+  }
+
+  function statusLabel(status) {
+    return {
+      not_yet_shipped: 'not yet shipped',
+      pending_approval: 'pending review',
+      approved: 'approved',
+      rejected: 'rejected'
+    }[status] || status;
+  }
+
+  function isLocked(status) {
+    return status === 'pending_approval';
+  }
+
+  function missingShipFields(p) {
+    return ['repository_url', 'demo_url', 'image_url', 'hackatime_project', 'hackatime_hours']
+      .filter((field) => !p[field]);
+  }
+
+  function filloutUrl(p) {
+    const url = new URL(FILLOUT_FORM_URL);
+    url.searchParams.set('name', user.name || '');
+    url.searchParams.set('email', user.email || '');
+    url.searchParams.set('slack_id', user.slack_id || '');
+    url.searchParams.set('display_name', user.display_name || '');
+    url.searchParams.set('project_name', p.name || '');
+    url.searchParams.set('description', p.description || '');
+    url.searchParams.set('hackatime_project', p.hackatime_project || '');
+    url.searchParams.set('hackatime_hours', p.hackatime_hours || '');
+    url.searchParams.set('repository_url', p.repository_url || '');
+    url.searchParams.set('demo_url', p.demo_url || '');
+    url.searchParams.set('image_url', p.image_url || '');
+    return url.toString();
+  }
+
+  function hackatimeOptionLabel(p) {
+    return p.hours ? `${p.name} - ${p.hours} hours` : p.name;
+  }
+
+  async function loadHackatimeProjects() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}/hackatime/projects?token=${encodeURIComponent(token)}`, {
+      headers: { 'X-User-Token': token }
+    });
+    if (!res.ok) {
+      hackatimeProjects = [];
+      hackatimeConnected = false;
+      return;
+    }
+    const data = await res.json();
+    hackatimeConnected = !!data.connected;
+    hackatimeProjects = data.projects || [];
+  }
+
+  async function saveProject(payload) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}/projects/${projectId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'X-User-Token': token },
+      body: JSON.stringify({ token, ...payload })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.errors?.join(', ') || data.error || 'Could not save project.');
+    return data;
+  }
+
+  async function uploadImage(file) {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('token', token);
+    formData.append('image', file);
+    const res = await fetch(`${API}/projects/${projectId}/upload_image`, {
+      method: 'POST',
+      headers: { 'X-User-Token': token },
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.errors?.join(', ') || data.error || 'Could not upload image.');
+    return data;
+  }
+
+  async function markPending(p) {
+    const missing = missingShipFields(p);
+    if (missing.length) {
+      throw new Error(`Add these before shipping: ${missing.map((f) => f.replaceAll('_', ' ')).join(', ')}`);
+    }
+    const data = await saveProject({ status: 'pending_approval' });
+    window.open(filloutUrl(data), '_blank', 'noopener,noreferrer');
+    project = data;
+    renderProject();
+  }
+
+  function renderStatusBadge(status) {
+    if (status === 'not_yet_shipped') {
+      statusBadge.classList.add('hidden');
+      return;
+    }
+    statusBadge.textContent = statusLabel(status);
+    statusBadge.classList.remove('hidden');
+  }
+
+  function editForm(p, locked) {
+    const disabled = locked ? 'disabled' : '';
+    const readonly = locked ? 'readonly' : '';
+    return `
+      <form class="project-edit flex flex-col gap-3 text-left" id="project-form">
+        ${p.image_url ? `<img src="${escapeHtml(p.image_url)}" class="w-full aspect-video object-cover rounded-xl" id="image-preview">` : '<img class="hidden w-full aspect-video object-cover rounded-xl" id="image-preview">'}
+        <input class="rounded-xl p-3 bg-[#fb4bb0]" name="name" value="${escapeHtml(p.name)}" placeholder="project name" required ${readonly}>
+        <textarea class="rounded-xl p-3 bg-[#fb4bb0] min-h-28 focus:outline-none" name="description" placeholder="description" required ${readonly}>${escapeHtml(p.description || '')}</textarea>
+        <input class="rounded-xl p-3 bg-[#fb4bb0]" name="repository_url" value="${escapeHtml(p.repository_url || '')}" placeholder="repo link" ${readonly}>
+        <input class="rounded-xl p-3 bg-[#fb4bb0]" name="demo_url" value="${escapeHtml(p.demo_url || '')}" placeholder="demo link" ${readonly}>
+        <div class="rounded-xl p-3 bg-[#fb4bb0]">
+          <p class="!m-0 mb-2">Project image</p>
+          <input class="rounded-xl p-3 bg-[#ff78cd] w-full mb-2" name="image_url" value="${escapeHtml(p.image_url || '')}" placeholder="image link" ${readonly}>
+          ${locked ? '' : `
+            <label class="block rounded-xl p-3 bg-[#ff78cd] cursor-pointer">
+              or upload an image
+              <input type="file" accept="image/*" class="hidden" id="image-upload">
+            </label>
+          `}
+        </div>
+        <div class="hackatime-editor rounded-xl p-3 bg-[#fb4bb0]">
+          <p class="!m-0 mb-2">Hackatime project</p>
+          <select class="rounded-xl p-3 bg-[#ff78cd] w-full" data-hackatime-select ${disabled}>
+            <option value="">choose a Hackatime project</option>
+          </select>
+          <input type="hidden" name="hackatime_project" value="${escapeHtml(p.hackatime_project || '')}">
+          <input type="hidden" name="hackatime_hours" value="${escapeHtml(p.hackatime_hours || '')}">
+          <p class="hackatime-warning !m-0 mt-2 hidden"></p>
+          <a class="hackatime-connect-link hidden inline-block rounded-xl p-2 bg-[#ff78cd] mt-2 no-underline">connect Hackatime</a>
+        </div>
+        ${locked ? '<p class="text-center">This project is pending review. You can edit it again once it has been approved or rejected.</p>' : `
+          <div class="flex flex-wrap gap-3 justify-center">
+            <button class="rounded-xl p-2 bg-[#fb4bb0]" type="submit">save</button>
+            ${p.status === 'not_yet_shipped' || p.status === 'rejected' ? `<button class="rounded-xl p-2 bg-[#fb4bb0]" type="button" id="ship-btn">ship</button>` : ''}
+          </div>
+        `}
+      </form>
+    `;
+  }
+
+  function setupHackatimeEditor(p) {
+    const select = content.querySelector('[data-hackatime-select]');
+    const projectInput = content.querySelector('input[name="hackatime_project"]');
+    const hoursInput = content.querySelector('input[name="hackatime_hours"]');
+    const warning = content.querySelector('.hackatime-warning');
+    const connectLink = content.querySelector('.hackatime-connect-link');
+
+    if (!hackatimeProjects.length) {
+      warning.classList.remove('hidden');
+      warning.textContent = hackatimeConnected
+        ? 'Hackatime is linked, but the API did not return any projects with all-time hours yet.'
+        : 'Link Hackatime to choose a project from the API.';
+      if (!hackatimeConnected) {
+        const token = localStorage.getItem('token');
+        connectLink.href = `${API}/hackatime/connect?token=${encodeURIComponent(token)}`;
+        connectLink.classList.remove('hidden');
+      }
+      if (p.hackatime_project) {
+        const option = document.createElement('option');
+        option.value = 'saved';
+        option.textContent = `${p.hackatime_project}${p.hackatime_hours ? ` - ${p.hackatime_hours} hours` : ''}`;
+        select.appendChild(option);
+        select.value = 'saved';
+      }
+      return;
+    }
+
+    let selectedIndex = -1;
+    hackatimeProjects.forEach((hp, index) => {
+      const option = document.createElement('option');
+      option.value = String(index);
+      option.textContent = hackatimeOptionLabel(hp);
+      select.appendChild(option);
+      if (hp.name === p.hackatime_project) selectedIndex = index;
+    });
+    if (selectedIndex >= 0) select.value = String(selectedIndex);
+
+    select.addEventListener('change', () => {
+      const selected = hackatimeProjects[Number(select.value)];
+      projectInput.value = selected?.name || '';
+      hoursInput.value = selected?.hours || '';
+    });
+  }
+
+  function setupFormHandlers(p, locked) {
+    if (locked) return;
+
+    const form = content.querySelector('#project-form');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const payload = Object.fromEntries(new FormData(form).entries());
+      try {
+        project = await saveProject(payload);
+        renderProject();
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+
+    content.querySelector('#ship-btn')?.addEventListener('click', async () => {
+      const payload = Object.fromEntries(new FormData(form).entries());
+      try {
+        project = await saveProject(payload);
+        await markPending(project);
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+
+    content.querySelector('#image-upload')?.addEventListener('change', async (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      try {
+        project = await uploadImage(file);
+        renderProject();
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  }
+
+  function renderProject() {
+    const locked = isLocked(project.status);
+    pageTitle.textContent = project.name;
+    renderStatusBadge(project.status);
+    content.innerHTML = `<div class="bg-[#fb4bb0] rounded-xl p-5 mt-10">${editForm(project, locked)}</div>`;
+    content.classList.remove('hidden');
+    loading.classList.add('hidden');
+    setupHackatimeEditor(project);
+    setupFormHandlers(project, locked);
+  }
+
+  async function loadProject() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}/projects/${projectId}?token=${encodeURIComponent(token)}`, {
+      headers: { 'X-User-Token': token }
+    });
+    if (!res.ok) {
+      loading.textContent = 'Project not found.';
+      return;
+    }
+    project = await res.json();
+    renderProject();
+  }
+
+  user = await requireAuth();
+  await loadHackatimeProjects();
+  await loadProject();
+</script>

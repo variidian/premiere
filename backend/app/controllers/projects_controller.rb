@@ -5,6 +5,11 @@ class ProjectsController < ApplicationController
     render json: current_user.projects.order(updated_at: :desc).map { |project| serialize_project(project) }
   end
 
+  def show
+    project = current_user.projects.find(params[:id])
+    render json: serialize_project(project)
+  end
+
   def accepted
     render json: Project.approved.includes(:user).map { |project| serialize_project(project) }
   end
@@ -22,11 +27,42 @@ class ProjectsController < ApplicationController
   def update
     project = current_user.projects.find(params[:id])
 
+    if project.status == 'pending_approval'
+      return render json: { error: 'Cannot edit a project while it is pending review' }, status: :forbidden
+    end
+
     if project.update(project_params)
       render json: serialize_project(project)
     else
       render json: { errors: project.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def upload_image
+    project = current_user.projects.find(params[:id])
+
+    if project.status == 'pending_approval'
+      return render json: { error: 'Cannot edit a project while it is pending review' }, status: :forbidden
+    end
+
+    file = params[:image]
+    return render json: { error: 'No image provided' }, status: :unprocessable_entity unless file
+
+    allowed_types = %w[image/jpeg image/png image/gif image/webp]
+    unless allowed_types.include?(file.content_type)
+      return render json: { error: 'Image must be JPEG, PNG, GIF, or WebP' }, status: :unprocessable_entity
+    end
+
+    dir = Rails.root.join('public', 'uploads', 'projects')
+    FileUtils.mkdir_p(dir)
+    ext = File.extname(file.original_filename).downcase
+    ext = '.jpg' if ext.blank?
+    filename = "#{project.id}-#{SecureRandom.hex(8)}#{ext}"
+    File.binwrite(dir.join(filename), file.read)
+
+    base = ENV.fetch('BACKEND_URL', 'http://localhost:3000')
+    project.update!(image_url: "#{base}/uploads/projects/#{filename}")
+    render json: serialize_project(project)
   end
 
   private

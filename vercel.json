@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/projects/:id/manage", "destination": "/projects/0/manage" }
+  ]
+}
