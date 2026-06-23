@@ -1,0 +1,64 @@
+---
+import '../../src/styles/global.css'
+import '../../src/styles/platform.css'
+import UserBar from '../components/user.astro'
+---
+<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
+<!--navbar -->
+    <div class=" left-0 top-0 fixed">
+        <img src="navbar_.png" class="h-screen">
+        <img src="stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
+        <div class="z-10 absolute top-0 left-0 right-0">
+            <a href="/dash">
+            <img src="home_d.png" class="min-w-full lift">
+        </a>
+            <a href="/projects">
+            <img src="projects_d.png" class="min-w-full lift">
+            </a>
+            <a href="/gallery">
+            <img src="gallery_d.png" class="min-w-full lift">
+            </a>
+            <a href="/shop">
+            <img src="shop_d.png" class="min-w-full lift">
+            </a>
+        </div>
+    </div>
+
+<UserBar></UserBar>
+<div class=" ml-[58.9vh] p-20 text-center max-w-full">
+    <div class="overflow-hidden">
+        <h1>A guide to premiere :)</h1>
+</div>
+<div class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
+<h2>Contents</h2>
+<ul>
+    <li><a href="#Installing">Installing a code editor & What you can use</a></li>
+    <li><a href="#Setting">Setting up Hackatime</a></li>
+</ul>
+</div>
+
+<div id="#Installing" class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
+<h2>Installing a code editor & What you can use</h2>
+<p>This is what you'll be making your game in. You can use whichever one you like, however it must be able to create either a web export or Windows, Linux and Mac (all three), as well as support <a href="https://hackatime.hackclub.com/">Hackatime</a>, which i'll cover soon. I'll be going forward with the Godot Engine for this tutorial, which you can install for free <a href="https://godotengine.org/download">here.</a></p>
+<p class="mt-4">Other popular editors include <a href="https://unity.com/">unity</a> and <a href="https://www.unrealengine.com/"> unreal engine</a>, however you can view the whole list of supported engines below.</p>
+<img src="hackatime_screenshot3.png" class="mt-4">
+</div>
+
+<div id="#Setting" class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
+  <h2>Setting up Hackatime</h2>
+  <p class="mt-4">To track time for this YSWS program, you'll need to head to <a href="https://hackatime.hackclub.com">hackatime.hackclub.com</a> and sign in via Hack Club. Once you're in, navigate to the Quick Start section under Docs and follow the installation steps.</p>
+  <img src="hackatime_screenshot1.png" class="mt-4">
+  <p class="mt-4">When you get to this page, you'll have the choice of what code editor to install Hackatime on. I'll choose Godot because it's what i just installed - if you're following along, then choose Godot as well.</p>
+  <img src="hackatime_screenshot2.png">
+  <p class="mt-4"></p>
+  <p class="mt-4">If you're having trouble, try having a look at this <a href="https://www.youtube.com/watch?v=grriwsX5mIo&t=4s">video tutorial for something more in-depth.</a></p>
+</div>
+</div>
+</body>
+
+<script>
+  import { requireAuth } from '../scripts/auth.js';
+
+  const user = await requireAuth();
+  document.getElementById('settings-name').textContent = `${user.display_name || user.name}`;
+</script>
