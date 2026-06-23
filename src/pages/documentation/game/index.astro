@@ -1,34 +1,26 @@
 ---
-import '../../src/styles/global.css'
-import '../../src/styles/platform.css'
-import UserBar from '../components/user.astro'
+import '../../../../src/styles/global.css'
+import '../../../../src/styles/platform.css'
 ---
-<body class="bg-[url(/bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
-<!--navbar -->
-    <div class=" left-0 top-0 fixed">
-        <img src="navbar_.png" class="h-screen">
-        <img src="stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
-        <div class="z-10 absolute top-0 left-0 right-0">
-            <a href="/dash">
-            <img src="home_d.png" class="min-w-full lift">
-        </a>
-            <a href="/projects">
-            <img src="projects_d.png" class="min-w-full lift">
-            </a>
-            <a href="/gallery">
-            <img src="gallery_d.png" class="min-w-full lift">
-            </a>
-            <a href="/shop">
-            <img src="shop_d.png" class="min-w-full lift">
-            </a>
-        </div>
-    </div>
+<body class="bg-[url(/../../bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
 
-<UserBar></UserBar>
-<div class=" ml-[58.9vh] p-20 text-center max-w-full">
-    <div class="overflow-hidden">
-        <h1>guides</h1>
-</div>
+    <body class="bg-[url(../../bg.png)] bg-fixed bg-center bg-no-repeat bg-cover ">
+        <!--navbar -->
+            <div class=" left-0 top-0 fixed">
+                <img src="/../../navbar_.png" class="h-screen">
+                <img src="/../../stick.png" class="h-screen absolute top-0 left-1/2 -translate-x-1/2 z-[9] ">
+                <div class="z-10 absolute top-0 left-0 right-0">
+                    <a href="/documentation/game">
+                    <img src="/../../home_d.png" class="min-w-full lift">
+                </a>
+                    <a href="/documentation/trailer">
+                    <img src="/../../projects_d.png" class="min-w-full lift">
+                    </a>
+                </div>
+            </div>
+        
+<div class="ml-[58.9vh] p-20 text-center max-w-full">
+<h1>Making your game</h1>
 <div class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
 <h2>Contents</h2>
 <ul>
@@ -42,36 +34,32 @@ import UserBar from '../components/user.astro'
 <h2>Installing a code editor & What you can use</h2>
 <p class="mt-4">This is what you'll be making your game in. You can use any editor you like, however it must be able to create either a web export or executable on Windows, Linux and Mac (all three), as well as support <a href="https://hackatime.hackclub.com/">Hackatime</a>, which i'll cover soon. I'll be going forward with the Godot Engine for this tutorial, which you can install for free <a href="https://godotengine.org/download">here.</a></p>
 <p class="mt-4">Other popular editors include <a href="https://unity.com/">unity</a> and <a href="https://www.unrealengine.com/"> unreal engine</a>, however you can view the whole list of supported engines below.</p>
-<img src="hackatime_screenshot3.png" class="mt-4">
+<img src="/../../hackatime_screenshot3.png" class="mt-4">
 </div>
 
 <div id="Godot" class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
     <h2>Setting up Godot</h2>
     <p class="mt-4">Install the latest version of Godot <a href="https://godotengine.org/download"> </a>here - it should be version 4.7. Once you extract the files from the zip and open the exe, you'll be brought to the project manager screen. Click the Create button as shown in the image below.</p>
-    <img class="mt-4" src="godot_screenshot1.png">
+    <img class="mt-4" src="/../../godot_screenshot1.png">
     <p class="mt-4">Name your project and select the folder it'll be stored in - similarly to the image shown. We'll be using the compatability renderer because this 2D game doesn't need advanced features like compute shaders, and its also the only option that supports development for the web.</p>
     <p class="mt-4"> In other games you might make, choose Forward+ if you need the most advanced rendering features and are developing for desktop, or Mobile if you're developing for newer mobile devices and want to use advanced rendering features (may be subject to the limitations of mobile hardware).</p>
-    <img class="mt-4" src="godot_screenshot2.png">
-
+    <img class="mt-4" src="/../../godot_screenshot2.png">
 </div>
 
 <div id="Setting" class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
   <h2>Setting up Hackatime</h2>
   <p class="mt-4">To track time for this YSWS program, you'll need to head to <a href="https://hackatime.hackclub.com">hackatime.hackclub.com</a> and sign in via Hack Club. Once you're in, navigate to the Quick Start section under Docs and follow the installation steps.</p>
-  <img src="hackatime_screenshot1.png" class="mt-4">
+  <img src="/../../hackatime_screenshot1.png" class="mt-4">
   <p class="mt-4">When you get to this page, you'll have the choice of what code editor to install Hackatime on. This tutorial uses Godot, so that's what we'll use.</p>
-  <img src="hackatime_screenshot2.png" class="mt-4">
+  <img src="/../../hackatime_screenshot2.png" class="mt-4">
   <p class="mt-4">Follow the set up steps shown below.</p>
-  <img src="hackatime_screenshot4.png" class="mt-4">
+  <img src="/../../hackatime_screenshot4.png" class="mt-4">
   <p class="mt-4">If you're having trouble, try having a look at this <a href="https://www.youtube.com/watch?v=grriwsX5mIo&t=4s">video tutorial for something more in-depth.</a></p>
 </div>
 
+<div class="bg-[#fb4bb0] rounded-xl p-5 mt-10">
+<p>more coming soon</p>
+</div>
+</div>
 </div>
 </body>
-
-<script>
-  import { requireAuth } from '../scripts/auth.js';
-
-  const user = await requireAuth();
-  document.getElementById('settings-name').textContent = `${user.display_name || user.name}`;
-</script>
