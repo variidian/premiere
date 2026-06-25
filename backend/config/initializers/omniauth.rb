@@ -17,3 +17,4 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     },
     scope: 'openid email name profile verification_status slack_id'
 end
+3
